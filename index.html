@@ -2,10 +2,18 @@
 "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" type="image/x-icon" href="favicon.ico">
 <title>Pongo Hard Drive - Free HDD/SSD Diagnostic Tools</title>
 <style type="text/css">
 <!--
+body, td, th {
+	font-family: Tahoma, Geneva, sans-serif;
+	font-size: medium;
+	color: #000000;
+	background-color: #FFFFFF;
+}
 a:link {
 	color: #0000FF;
 	text-decoration: none;
@@ -22,105 +30,184 @@ a:active {
 	text-decoration: none;
 	color: #0000FF;
 }
-.style1 {font-size: small}
-body,td,th {
-	font-family: Tahoma;
-	font-size: medium;
+.style1 { font-size: small }
+.style2 { font-size: x-small }
+h1, h2, h3 {
+	font-family: Tahoma, Geneva, sans-serif;
+	margin-top: 0;
 }
-.style2 {font-size: x-small}
+table.data {
+	width: 100%;
+	border-collapse: collapse;
+	font-size: x-small;
+	background-color: #FFFFFF;
+}
+table.data th {
+	text-align: left;
+	padding: 4px 6px;
+	background-color: #CCCCCC;
+	border: 1px solid #999999;
+	font-weight: bold;
+}
+table.data td {
+	padding: 4px 6px;
+	border: 1px solid #CCCCCC;
+	vertical-align: top;
+	font-size: x-small;
+}
+table.data tr:hover td {
+	background-color: #F0F0F0;
+}
+table.data td.name a {
+	color: #0000FF;
+}
+.status {
+	padding: 6px 0;
+	color: #333333;
+	font-size: x-small;
+	font-style: italic;
+}
+.download-box {
+	border: 1px solid #999999;
+	background-color: #EEEEEE;
+	padding: 10px 12px;
+	margin: 10px 0;
+	text-align: center;
+}
+.download-box a {
+	font-weight: bold;
+	font-size: small;
+}
+.footer {
+	font-size: x-small;
+	color: #333333;
+	border-top: 1px solid #CCCCCC;
+	padding-top: 8px;
+	margin-top: 12px;
+}
 -->
-</style></head>
+</style>
+</head>
 
 <body>
-<table width="100%"  border="0">
+<table width="100%" border="0" cellpadding="8" cellspacing="0">
   <tr>
-    <td bgcolor="#CCCCCC"><table width="506"  border="0">
-      <tr>
-        <td width="21%"><img src="logo.png" width="100"></td>
-        <td width="65%" align="center"><p class="style1"><span class="style2"><strong>(Pongo Hard Drive)</strong><br>
-          Free HDD/SSD Diagnostic Tools</span></p>
-          <p class="style1"><span class="style2">&copy; 2015 - 2026 Ari Sohandri Putra. All Rights Reserved</span>.</p></td>
-        <td width="14%">&nbsp;</td>
-      </tr>
-    </table></td>
+    <td bgcolor="#CCCCCC">
+      <table width="100%" border="0" cellpadding="4" cellspacing="0">
+        <tr>
+          <td width="100"><img src="logo.png" width="100" alt="PHD Logo"></td>
+          <td align="center">
+            <p class="style1"><span class="style2"><strong>(Pongo Hard Drive)</strong><br>
+              Free HDD/SSD Diagnostic Tools</span></p>
+            <p class="style1"><span class="style2">&copy; 2015 - <span id="year">2026</span> Ari Sohandri Putra. All Rights Reserved.</span></p>
+          </td>
+          <td width="100">&nbsp;</td>
+        </tr>
+      </table>
+    </td>
   </tr>
   <tr>
-    <td valign="top"><p><strong>Pongo Hard Drive (PHD)</strong> is a free command-line utility for getting a closer look at your HDDs and SSDs.</p>
+    <td valign="top">
+      <p><strong>Pongo Hard Drive (PHD)</strong> is a free command-line utility for getting a closer look at your HDDs and SSDs.</p>
       <p>PHD reads information reported by the storage device and presents it in a simple, straightforward format. You can use it to identify your drives, check their current health status, view temperature readings, inspect <strong>S.M.A.R.T.</strong> attributes, and review diagnostic information.</p>
       <p>It can show details such as the drive model, manufacturer, serial number, firmware revision, capacity, sector size, interface information, supported features, temperature history, and other information available from the device.</p>
       <p>PHD also includes built-in diagnostic functions for running quick or deeper drive tests, checking previous test results, and exporting drive information to TXT, JSON, or HTML reports.</p>
-      <table width="100%"  border="0">
+
+      <div class="download-box">
+        <a href="https://github.com/pongoeditor/phd/releases/latest">Download PHD</a>
+        <br>
+        <span class="style2">Latest release for Windows. No installation required.</span>
+      </div>
+
+      <table width="100%" border="0" cellpadding="4" cellspacing="0">
         <tr valign="top">
-          <td width="58%"><p><strong> </strong><strong>Drive Detection</strong></p>
-          <ul>
-            <li>Automatically detects connected HDD and SSD drives.</li>
-            <li>Supports internal and external storage devices.</li>
-            <li>Displays detected drive number and basic device information.</li>
+          <td width="58%">
+            <p><strong>Drive Detection</strong></p>
+            <ul>
+              <li>Automatically detects connected HDD and SSD drives.</li>
+              <li>Supports internal and external storage devices.</li>
+              <li>Displays detected drive number and basic device information.</li>
             </ul>
-          <p><strong>Drive Information</strong></p>
-          <ul>
-            <li>Model name</li>
-            <li>Manufacturer / brand</li>
-            <li>Serial number</li>
-            <li>Firmware revision</li>
-            <li>WWN</li>
-            <li>Drive capacity</li>
-            <li>Sector information</li>
-            <li>Form factor</li>
-            <li>Rotation speed</li>
-            <li>Interface information</li>
-            </ul>          
-          <p><strong>Drive Health Status</strong></p>
-          <ul>
-            <li>Check the current health status of the selected drive.</li>
-            <li>Displays the drive's reported health condition.</li>
-            <li>Shows available diagnostic and monitoring capabilities.</li>
-            </ul>          
-          <p><strong>Temperature Monitoring</strong></p>
-          <ul>
-            <li>Current drive temperature</li>
-            <li>Airflow temperature when available</li>
-            <li>Minimum recorded temperature</li>
-            <li>Maximum recorded temperature</li>
-            </ul>          
-          <p><strong>S.M.A.R.T. Information</strong></p>
-          <ul>
-            <li>Displays available S.M.A.R.T. attributes.</li>
-            <li>Attribute ID</li>
-            <li>Attribute name</li>
-            <li>Current value</li>
-            <li>Threshold</li>
-            <li>Raw value</li>
-            </ul>          
-          <p><strong>Drive Diagnostics</strong></p>
-          <ul>
-            <li>Quick / short diagnostic test</li>
-            <li>Deep / long diagnostic test</li>
-            <li>Live diagnostic progress</li>
-            <li>Stop or cancel a running test</li>
-            <li>View previous diagnostic results</li>
-            <li>View diagnostic history</li>
-          </ul>          
-          <p>&nbsp;</p></td>
-          <td width="42%" bgcolor="#CCCCCC"><strong>Report Submission</strong><br>
-		  <div id="status" class="status">Loading submissions&hellip;</div>
-    <table class="data" id="list" style="display:none;">
-      <thead>
-        <tr>
-          <th style="width: 190px;">Date</th>
-          <th>Report</th>
-          <th style="width: 100px;">Size</th>
+            <p><strong>Drive Information</strong></p>
+            <ul>
+              <li>Model name</li>
+              <li>Manufacturer / brand</li>
+              <li>Serial number</li>
+              <li>Firmware revision</li>
+              <li>WWN</li>
+              <li>Drive capacity</li>
+              <li>Sector information</li>
+              <li>Form factor</li>
+              <li>Rotation speed</li>
+              <li>Interface information</li>
+            </ul>
+            <p><strong>Drive Health Status</strong></p>
+            <ul>
+              <li>Check the current health status of the selected drive.</li>
+              <li>Displays the drive's reported health condition.</li>
+              <li>Shows available diagnostic and monitoring capabilities.</li>
+            </ul>
+            <p><strong>Temperature Monitoring</strong></p>
+            <ul>
+              <li>Current drive temperature</li>
+              <li>Airflow temperature when available</li>
+              <li>Minimum recorded temperature</li>
+              <li>Maximum recorded temperature</li>
+            </ul>
+            <p><strong>S.M.A.R.T. Information</strong></p>
+            <ul>
+              <li>Displays available S.M.A.R.T. attributes.</li>
+              <li>Attribute ID</li>
+              <li>Attribute name</li>
+              <li>Current value</li>
+              <li>Threshold</li>
+              <li>Raw value</li>
+            </ul>
+            <p><strong>Drive Diagnostics</strong></p>
+            <ul>
+              <li>Quick / short diagnostic test</li>
+              <li>Deep / long diagnostic test</li>
+              <li>Live diagnostic progress</li>
+              <li>Stop or cancel a running test</li>
+              <li>View previous diagnostic results</li>
+              <li>View diagnostic history</li>
+            </ul>
+          </td>
+          <td width="42%" bgcolor="#CCCCCC" valign="top">
+            <strong>Report Submission</strong>
+            <div id="status" class="status">Loading submissions&hellip;</div>
+            <table class="data" id="list" style="display:none;">
+              <thead>
+                <tr>
+                  <th style="width: 150px;">Date</th>
+                  <th>Report</th>
+                  <th style="width: 70px;">Size</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </td>
         </tr>
-      </thead>
-      <tbody></tbody>
-    </table></td>
-        </tr>
-      </table>      <p>&nbsp; </p></td>
+      </table>
+
+      <div class="footer">
+        <p>
+          <strong>PHD &middot; Pongo Hard Drive</strong><br>
+          &copy; 2015 &ndash; <span id="year2">2026</span> Ari Sohandri Putra. All Rights Reserved.<br>
+          <a href="https://www.pongo.my.id">www.pongo.my.id</a>
+        </p>
+      </div>
+    </td>
   </tr>
 </table>
-<script>
+
+<script type="text/javascript">
 (function () {
-  document.getElementById('year').textContent = new Date().getFullYear();
+  var yr = new Date().getFullYear();
+  var y1 = document.getElementById('year');
+  var y2 = document.getElementById('year2');
+  if (y1) y1.textContent = yr;
+  if (y2) y2.textContent = yr;
 
   var OWNER = 'pongoeditor';
   var REPO = 'pongoeditor.github.io';
@@ -129,7 +216,7 @@ body,td,th {
 
   var status = document.getElementById('status');
   var table = document.getElementById('list');
-  var tbody = table.querySelector('tbody');
+  var tbody = table.getElementsByTagName('tbody')[0];
 
   function fmtSize(bytes) {
     if (bytes < 1024) return bytes + ' B';
@@ -156,8 +243,12 @@ body,td,th {
         return;
       }
 
-      var html = files.filter(function (f) { return f.type === 'file' && /\.html?$/i.test(f.name); });
-      html.sort(function (a, b) { return b.name.localeCompare(a.name); });
+      var html = files.filter(function (f) {
+        return f.type === 'file' && /\.html?$/i.test(f.name);
+      });
+      html.sort(function (a, b) {
+        return b.name.localeCompare(a.name);
+      });
 
       if (html.length === 0) {
         status.textContent = 'No submissions yet.';
