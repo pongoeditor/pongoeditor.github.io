@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PHD Submissions &mdash; Pongo Hard Drive</title>
+<style>
+html, body { margin: 0; padding: 0; }
+body { background: #f4f4f2; color: #2a2a2a; font-family: Georgia, "Times New Roman", serif; font-size: 14px; line-height: 1.55; padding: 40px 16px; }
+.page { max-width: 880px; margin: 0 auto; background: #fff; border: 1px solid #d8d8d4; }
+.masthead { padding: 30px 40px 22px 40px; border-bottom: 1px solid #e2e2de; }
+.masthead h1 { margin: 0; font-size: 22px; font-weight: normal; letter-spacing: 6px; color: #2a2a2a; }
+.masthead .tag { font-size: 11px; letter-spacing: 3px; color: #8a8a86; text-transform: uppercase; margin-top: 4px; }
+.masthead .sub { font-size: 12px; color: #6a6a66; margin-top: 14px; }
+.section { padding: 24px 40px; }
+.section h2 { margin: 0 0 16px 0; font-size: 12px; letter-spacing: 3px; text-transform: uppercase; color: #55554f; font-weight: normal; border-bottom: 1px solid #e2e2de; padding-bottom: 8px; }
+table.data { width: 100%; border-collapse: collapse; font-size: 13px; }
+table.data th { text-align: left; padding: 8px 10px; font-size: 10.5px; letter-spacing: 1.5px; text-transform: uppercase; color: #77776f; font-weight: normal; border-bottom: 1px solid #c8c8c4; }
+table.data td { padding: 8px 10px; border-bottom: 1px solid #ececea; color: #2a2a2a; font-family: Consolas, "Courier New", monospace; font-size: 12.5px; }
+table.data tr:last-child td { border-bottom: 1px solid #c8c8c4; }
+table.data tr:hover td { background: #fafaf8; }
+table.data td.name a { color: #2a2a2a; text-decoration: none; border-bottom: 1px dotted #b8b8b2; }
+table.data td.name a:hover { border-bottom-style: solid; }
+.status { padding: 16px 0; color: #77776f; font-size: 13px; }
+.footer { padding: 22px 40px 26px 40px; border-top: 1px solid #e2e2de; text-align: center; font-size: 11px; color: #8a8a86; line-height: 1.7; }
+.footer .brand { letter-spacing: 3px; text-transform: uppercase; color: #55554f; }
+.footer a { color: #55554f; text-decoration: none; border-bottom: 1px dotted #b8b8b2; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="masthead">
+    <h1>P H D</h1>
+    <div class="tag">Pongo Hard Drive</div>
+    <div class="sub">Public diagnostic report submissions</div>
+  </div>
+
+  <div class="section">
+    <h2>Recent Submissions</h2>
+    <div id="status" class="status">Loading submissions&hellip;</div>
+    <table class="data" id="list" style="display:none;">
+      <thead>
+        <tr>
+          <th style="width: 190px;">Date</th>
+          <th>Report</th>
+          <th style="width: 100px;">Size</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <div class="footer">
+    <div class="brand">PHD &middot; Pongo Hard Drive</div>
+    <div>&copy; 2015 &ndash; <span id="year"></span> Ari Sohandri Putra. All Rights Reserved.</div>
+    <div><a href="https://www.pongo.my.id">www.pongo.my.id</a></div>
+  </div>
+
+</div>
+
+<script>
+(function () {
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  var OWNER = 'pongoeditor';
+  var REPO = 'pongoeditor.github.io';
+  var FOLDER = 'submit';
+  var API = 'https://api.github.com/repos/' + OWNER + '/' + REPO + '/contents/' + FOLDER;
+
+  var status = document.getElementById('status');
+  var table = document.getElementById('list');
+  var tbody = table.querySelector('tbody');
+
+  function pad(n) { return n < 10 ? '0' + n : '' + n; }
+
+  function fmtDate(d) {
+    return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()) +
+           ' ' + pad(d.getHours()) + ':' + pad(d.getMinutes());
+  }
+
+  function fmtSize(bytes) {
+    if (bytes < 1024) return bytes + ' B';
+    if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+    return (bytes / 1024 / 1024).toFixed(2) + ' MB';
+  }
+
+  function escape(s) {
+    return String(s).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+
+  fetch(API + '?ref=main', { headers: { 'Accept': 'application/vnd.github+json' } })
+    .then(function (r) {
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      return r.json();
+    })
+    .then(function (files) {
+      if (!Array.isArray(files) || files.length === 0) {
+        status.textContent = 'No submissions yet.';
+        return;
+      }
+
+      var html = files.filter(function (f) { return f.type === 'file' && /\.html?$/i.test(f.name); });
+      html.sort(function (a, b) { return b.name.localeCompare(a.name); });
+
+      if (html.length === 0) {
+        status.textContent = 'No submissions yet.';
+        return;
+      }
+
+      html.forEach(function (f) {
+        var tr = document.createElement('tr');
+
+        var tdDate = document.createElement('td');
+        tdDate.textContent = f.name.substring(0, 15).replace('_', ' ').replace(/(\d{4})(\d{2})(\d{2})/, '$1-$2-$3').replace(/(\d{2})(\d{2})(\d{2})/, '$1:$2:$3');
+        tr.appendChild(tdDate);
+
+        var tdName = document.createElement('td');
+        tdName.className = 'name';
+        var a = document.createElement('a');
+        a.href = FOLDER + '/' + f.name;
+        a.textContent = f.name;
+        tdName.appendChild(a);
+        tr.appendChild(tdName);
+
+        var tdSize = document.createElement('td');
+        tdSize.textContent = fmtSize(f.size);
+        tr.appendChild(tdSize);
+
+        tbody.appendChild(tr);
+      });
+
+      status.style.display = 'none';
+      table.style.display = '';
+    })
+    .catch(function (e) {
+      status.textContent = 'Failed to load submissions: ' + e.message +
+                          ' (GitHub API rate limit: 60 requests/hour per IP)';
+    });
+})();
+</script>
+</body>
+</html>
