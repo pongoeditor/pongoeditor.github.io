@@ -1,781 +1,332 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-"http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="icon" type="image/x-icon" href="favicon.ico">
-<title>Pongo Hard Drive - Free HDD/SSD Diagnostic Tools</title>
-<style type="text/css">
-<!--
-body, td, th {
-	font-family: Tahoma, Geneva, sans-serif;
-	font-size: 13px;
-	color: #000000;
-	background-color: #FFFFFF;
-	margin: 0;
-	padding: 0;
-}
-a:link, a:visited {
-	color: #0000FF;
-	text-decoration: none;
-}
-a:hover {
-	color: #FF0000;
-}
-table.layout {
-	width: 100%;
-	border-collapse: collapse;
-}
-td.header-cell {
-	background-color: #CCCCCC;
-	padding: 12px 20px;
-}
-td.content-cell {
-	padding: 24px 20px 12px 20px;
-	vertical-align: top;
-}
-.page {
-	max-width: 900px;
-	margin: 0 auto;
-}
-
-/* Headings */
-h1, h2, h3, h4 {
-	font-family: Tahoma, Geneva, sans-serif;
-	margin: 0;
-	font-weight: bold;
-}
-h2 {
-	font-size: 15px;
-	color: #000000;
-	padding-bottom: 6px;
-	border-bottom: 1px solid #CCCCCC;
-	margin-bottom: 12px;
-	margin-top: 28px;
-}
-h2.first {
-	margin-top: 0;
-}
-h3 {
-	font-size: 13px;
-	color: #333333;
-	margin-top: 18px;
-	margin-bottom: 6px;
-}
-p {
-	margin: 0 0 10px 0;
-	line-height: 1.6;
-}
-
-/* Lists */
-ul.plain {
-	margin: 0 0 10px 0;
-	padding-left: 20px;
-}
-ul.plain li {
-	margin-bottom: 3px;
-}
-
-/* Header block */
-.brand {
-	width: 100%;
-	border-collapse: collapse;
-}
-.brand td {
-	vertical-align: middle;
-}
-.brand .logo {
-	width: 90px;
-}
-.brand .title {
-	text-align: center;
-}
-.brand .title strong {
-	font-size: 14px;
-	color: #000000;
-}
-.brand .title .sub {
-	font-size: 11px;
-	color: #333333;
-}
-.brand .title .copy {
-	font-size: 11px;
-	color: #333333;
-	margin-top: 3px;
-}
-.brand .spacer {
-	width: 90px;
-}
-
-/* Download box */
-.download-box {
-	border: 1px solid #999999;
-	background-color: #F5F5F5;
-	padding: 16px 20px;
-	margin: 16px 0 24px 0;
-}
-.download-box h3 {
-	margin: 0 0 12px 0;
-	font-size: 13px;
-	color: #000000;
-}
-.download-box table.opt {
-	width: 100%;
-	border-collapse: collapse;
-}
-.download-box table.opt td {
-	padding: 8px 10px;
-	vertical-align: top;
-	border-bottom: 1px dotted #CCCCCC;
-}
-.download-box table.opt tr:last-child td {
-	border-bottom: 0;
-}
-.download-box table.opt td.dl {
-	width: 55%;
-}
-.download-box table.opt td.note {
-	width: 45%;
-	font-size: 12px;
-	color: #333333;
-}
-.download-box a.dl-link {
-	font-weight: bold;
-	font-size: 13px;
-	color: #0000FF;
-}
-.download-box .legacy-warn {
-	color: #CC0000;
-}
-
-/* Guide block */
-.guide-block {
-	margin: 0 0 20px 0;
-}
-.guide-block p.step {
-	margin: 0 0 10px 0;
-}
-.cmd {
-	font-family: "Courier New", Courier, monospace;
-	font-size: 12px;
-	background-color: #F0F0F0;
-	border: 1px solid #CCCCCC;
-	padding: 1px 6px;
-	color: #000000;
-}
-.example {
-	display: block;
-	font-family: "Courier New", Courier, monospace;
-	font-size: 12px;
-	background-color: #F9F9F9;
-	border-left: 3px solid #CCCCCC;
-	padding: 8px 12px;
-	margin: 8px 0 12px 0;
-	color: #333333;
-	line-height: 1.6;
-}
-
-/* Command table */
-table.cmds {
-	width: 100%;
-	border-collapse: collapse;
-	margin: 6px 0 14px 0;
-}
-table.cmds td {
-	padding: 7px 10px 7px 0;
-	vertical-align: top;
-	border-bottom: 1px solid #EEEEEE;
-	line-height: 1.55;
-}
-table.cmds td.cmdcol {
-	width: 170px;
-	font-family: "Courier New", Courier, monospace;
-	font-size: 12px;
-	color: #000000;
-	white-space: nowrap;
-}
-table.cmds td.desccol {
-	color: #333333;
-}
-table.cmds tr:last-child td {
-	border-bottom: 0;
-}
-
-/* Two column layout inside content */
-table.cols {
-	width: 100%;
-	border-collapse: collapse;
-	margin-top: 24px;
-}
-table.cols td {
-	vertical-align: top;
-}
-table.cols td.left {
-	width: 60%;
-	padding-right: 20px;
-}
-table.cols td.right {
-	width: 40%;
-	background-color: #F5F5F5;
-	border: 1px solid #CCCCCC;
-	padding: 16px 18px;
-}
-table.cols td.right h3 {
-	margin-top: 0;
-	font-size: 13px;
-}
-
-/* Submissions table */
-table.data {
-	width: 100%;
-	border-collapse: collapse;
-	font-size: 12px;
-	background-color: #FFFFFF;
-	margin-top: 6px;
-}
-table.data th {
-	text-align: left;
-	padding: 5px 8px;
-	background-color: #CCCCCC;
-	border: 1px solid #999999;
-	font-weight: bold;
-	font-size: 11px;
-}
-table.data td {
-	padding: 5px 8px;
-	border: 1px solid #DDDDDD;
-	vertical-align: top;
-	font-size: 12px;
-}
-table.data tr:hover td {
-	background-color: #F5F5F5;
-}
-table.data td.name a {
-	color: #0000FF;
-	font-size: 11px;
-	word-break: break-all;
-}
-.status {
-	padding: 8px 0;
-	color: #555555;
-	font-size: 12px;
-	font-style: italic;
-}
-
-/* Pager */
-.pager {
-	padding: 10px 0 0 0;
-	font-size: 12px;
-	color: #333333;
-}
-.pager a, .pager span {
-	display: inline-block;
-	padding: 3px 10px;
-	margin-right: 6px;
-	border: 1px solid #CCCCCC;
-	background-color: #FFFFFF;
-	color: #0000FF;
-	font-size: 12px;
-}
-.pager a:hover {
-	background-color: #EEEEEE;
-	color: #FF0000;
-}
-.pager .disabled {
-	color: #AAAAAA;
-	background-color: #F9F9F9;
-}
-.pager .pageinfo {
-	border: 0;
-	background-color: transparent;
-	color: #555555;
-	padding-left: 4px;
-}
-
-/* Footer */
-.footer {
-	border-top: 1px solid #CCCCCC;
-	margin-top: 32px;
-	padding: 14px 20px 20px 20px;
-	text-align: center;
-	font-size: 11px;
-	color: #333333;
-	line-height: 1.7;
-}
-
-/* Feature list styled cleaner */
-ul.features {
-	margin: 0 0 16px 0;
-	padding: 0;
-	list-style: none;
-}
-ul.features li {
-	padding: 4px 0 4px 16px;
-	position: relative;
-	color: #333333;
-	font-size: 12px;
-	line-height: 1.55;
-}
-ul.features li:before {
-	content: "\2022";
-	position: absolute;
-	left: 4px;
-	color: #999999;
-}
--->
-</style>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>PongoFileShare - Simple File Uploader</title>
+<meta name="description" content="PongoFileShare - a simple desktop tool for uploading files and sharing them via public links.">
 </head>
+<body bgcolor="#FFFFFF" text="#000000" link="#0000CC" vlink="#660099" alink="#FF0000">
 
-<body>
+<center>
 
-<table class="layout">
-  <tr>
-    <td class="header-cell">
-      <div class="page">
-        <table class="brand">
-          <tr>
-            <td class="logo"><img src="logo.png" width="80" alt="PHD"></td>
-            <td class="title">
-              <strong>(Pongo Hard Drive)</strong><br>
-              <span class="sub">Free HDD/SSD Diagnostic Tools</span>
-              <div class="copy">&copy; 2015 - <span id="year">2026</span> Ari Sohandri Putra. All Rights Reserved.</div>
-            </td>
-            <td class="spacer">&nbsp;</td>
-          </tr>
-        </table>
-      </div>
-    </td>
-  </tr>
-  <tr>
-    <td class="content-cell">
-      <div class="page">
-
-        <p>
-          <strong>Pongo Hard Drive (PHD)</strong> is a small command-line tool that helps you
-          see what your drives are actually reporting. It talks directly to the storage device,
-          reads its health data, and lays it out in a format that's easy to read.
-        </p>
-        <p>
-          If you've ever wondered whether a drive is starting to fail, what its temperature
-          has been over the years, or what the manufacturer is saying about its condition,
-          PHD is meant for exactly that. It works with internal and external drives alike,
-          on both spinning hard disks and modern solid-state drives.
-        </p>
-
-        <div class="download-box">
-          <h3>Download</h3>
-          <table class="opt">
-            <tr>
-              <td class="dl">
-                <a href="release/phd.exe" class="dl-link">for Windows 10 / 11</a>
-              </td>
-              <td class="note">Tested and recommended on current Windows systems.</td>
-            </tr>
-            <tr>
-              <td class="dl">
-                <a href="release/old/phd.exe" class="dl-link">for Windows Vista / 7 / 8</a>
-              </td>
-              <td class="note">Older Windows releases. <span class="legacy-warn">No longer maintained.</span></td>
-            </tr>
-          </table>
-        </div>
-
-        <h2 class="first">Getting Started</h2>
-
-        <div class="guide-block">
-          <p class="step">
-            Download PHD and extract it anywhere on your computer. The whole program
-            fits in a single file, so you can keep it on a USB stick if you like.
-          </p>
-          <p class="step">
-            Right-click <strong>phd.exe</strong> and choose <strong>Run as administrator</strong>.
-            PHD needs elevated access to talk to the storage hardware. Without it, the drive
-            list will be empty.
-          </p>
-          <p class="step">
-            A banner appears and you land at a small prompt. Everything is typed in here.
-            Start by typing:
-          </p>
-          <span class="example">phd &gt; scan</span>
-          <p class="step">
-            This lists every drive PHD can see, one per line, with a number, model name,
-            and type. Numbers start at <strong>0</strong> for the first drive. You will
-            use that number for every command below.
-          </p>
-        </div>
-
-        <h2>Reading a Drive</h2>
-
-        <table class="cmds">
-          <tr>
-            <td class="cmdcol">info &lt;ID&gt;</td>
-            <td class="desccol">
-              Shows the drive's identity: model, manufacturer, serial number, firmware,
-              world-wide name, capacity, sector sizes, form factor, rotation speed, and
-              which features it supports (SMART, TRIM, NCQ, APM).
-            </td>
-          </tr>
-          <tr>
-            <td class="cmdcol">status &lt;ID&gt;</td>
-            <td class="desccol">
-              Reads the drive's own health verdict. The answer is <strong>GOOD</strong>,
-              <strong>FAILED</strong>, or <strong>UNKNOWN</strong> if the drive did not
-              report clearly. Also shows SMART capabilities and offline collection status.
-            </td>
-          </tr>
-          <tr>
-            <td class="cmdcol">temp &lt;ID&gt;</td>
-            <td class="desccol">
-              Shows the current temperature, airflow temperature when available, and the
-              lowest and highest temperatures the drive has ever recorded. Those historical
-              values are stored inside the drive itself, so they show how hot the drive
-              has actually been over its lifetime.
-            </td>
-          </tr>
-          <tr>
-            <td class="cmdcol">detail &lt;ID&gt;</td>
-            <td class="desccol">
-              Prints the full SMART attribute table: attribute ID, name, current value,
-              threshold, a status flag (OK, WARN, or BAD), and the raw counter value.
-            </td>
-          </tr>
-          <tr>
-            <td class="cmdcol">all &lt;ID&gt;</td>
-            <td class="desccol">
-              Runs everything above in one go, plus the drive's error log and self-test
-              history. Use this when you want the complete picture at once.
-            </td>
-          </tr>
-        </table>
-
-        <p>
-          For example, to see everything on the first drive:
-        </p>
-        <span class="example">phd &gt; all 0</span>
-
-        <h2>Running a Diagnostic Test</h2>
-
-        <p>
-          PHD can ask the drive to run its own built-in self-test. This is not a PHD
-          invention, it is a standard feature of the drive firmware. The drive tests
-          itself and reports the result.
-        </p>
-
-        <table class="cmds">
-          <tr>
-            <td class="cmdcol">probe &lt;ID&gt; quick</td>
-            <td class="desccol">
-              Starts a short self-test. Usually takes a minute or two. Good for a routine check.
-            </td>
-          </tr>
-          <tr>
-            <td class="cmdcol">probe &lt;ID&gt; deep</td>
-            <td class="desccol">
-              Starts a long self-test. This scans the entire surface of the drive and can
-              take several hours on a large disk. Run it when you suspect something is wrong.
-            </td>
-          </tr>
-          <tr>
-            <td class="cmdcol">probe &lt;ID&gt; report</td>
-            <td class="desccol">
-              Shows the drive's test history: what tests have been run, when they ran,
-              and whether they passed or failed.
-            </td>
-          </tr>
-          <tr>
-            <td class="cmdcol">probe &lt;ID&gt; stop</td>
-            <td class="desccol">
-              Asks the drive to stop a test that is currently running.
-            </td>
-          </tr>
-        </table>
-
-        <p>
-          While a test is running, a live progress bar appears. Press <strong>ESC</strong>
-          at any time to abort.
-        </p>
-
-        <h2>Saving and Sharing</h2>
-
-        <table class="cmds">
-          <tr>
-            <td class="cmdcol">export &lt;ID&gt; txt</td>
-            <td class="desccol">Saves a plain-text report to the current folder.</td>
-          </tr>
-          <tr>
-            <td class="cmdcol">export &lt;ID&gt; json</td>
-            <td class="desccol">
-              Saves the same data as JSON, useful if you want to process it with another program.
-            </td>
-          </tr>
-          <tr>
-            <td class="cmdcol">export &lt;ID&gt; html</td>
-            <td class="desccol">
-              Saves a formatted HTML report you can open in any browser or send to someone else.
-            </td>
-          </tr>
-          <tr>
-            <td class="cmdcol">submit &lt;ID&gt;</td>
-            <td class="desccol">
-              Publishes the HTML report to this website. Once uploaded, PHD prints a link
-              you can share. The report also appears in the submission list on this page.
-            </td>
-          </tr>
-        </table>
-
-        <h2>Other Commands</h2>
-
-        <table class="cmds">
-          <tr>
-            <td class="cmdcol">scan</td>
-            <td class="desccol">Lists every drive PHD can find.</td>
-          </tr>
-          <tr>
-            <td class="cmdcol">help</td>
-            <td class="desccol">Shows the built-in command reference.</td>
-          </tr>
-          <tr>
-            <td class="cmdcol">about</td>
-            <td class="desccol">Shows program credits and website information.</td>
-          </tr>
-          <tr>
-            <td class="cmdcol">clear</td>
-            <td class="desccol">Clears the screen and redraws the banner.</td>
-          </tr>
-          <tr>
-            <td class="cmdcol">exit</td>
-            <td class="desccol">
-              Closes the program. PHD removes any temporary files it created before quitting.
-            </td>
-          </tr>
-        </table>
-
-        <h2>A Typical Session</h2>
-
-        <span class="example">
-phd &gt; scan<br>
-phd &gt; all 0<br>
-phd &gt; probe 0 quick<br>
-phd &gt; submit 0<br>
-phd &gt; exit
-        </span>
-
-        <p>
-          That sequence lists the drives, shows a full report on the first one, runs a
-          quick self-test, publishes the report to this site, and closes the program.
-        </p>
-
-        <table class="cols">
-          <tr>
-            <td class="left">
-              <h2 class="first">Feature Summary</h2>
-
-              <h3>Finding your drives</h3>
-              <ul class="features">
-                <li>Lists every connected HDD, SSD, and NVMe device.</li>
-                <li>Shows the real model name instead of a device path.</li>
-                <li>Tags each drive by type so you know what you're looking at.</li>
-              </ul>
-
-              <h3>Device details</h3>
-              <ul class="features">
-                <li>Model name and manufacturer</li>
-                <li>Serial number and firmware revision</li>
-                <li>World Wide Name (WWN)</li>
-                <li>Storage capacity and sector sizes</li>
-                <li>Form factor and rotation speed</li>
-                <li>Interface protocol (ATA / SATA)</li>
-                <li>Supported features such as SMART, TRIM, NCQ, and APM</li>
-              </ul>
-
-              <h3>Health and temperature</h3>
-              <ul class="features">
-                <li>Drive's own health verdict: good, failed, or unclear</li>
-                <li>Current temperature</li>
-                <li>Airflow temperature when reported by the drive</li>
-                <li>Lowest and highest temperature ever recorded</li>
-              </ul>
-
-              <h3>SMART attributes</h3>
-              <ul class="features">
-                <li>Full attribute list with ID and name</li>
-                <li>Current and worst values</li>
-                <li>Threshold and per-attribute status</li>
-                <li>Raw counter values, formatted for readability</li>
-              </ul>
-
-              <h3>Diagnostics</h3>
-              <ul class="features">
-                <li>Quick scan for a fast check</li>
-                <li>Deep scan for a thorough surface test</li>
-                <li>Live progress, with ESC to abort</li>
-                <li>Review of previous test results</li>
-              </ul>
-
-              <h3>Saving and sharing</h3>
-              <ul class="features">
-                <li>Export as plain text, JSON, or HTML</li>
-                <li>Publish a report to this site with one command</li>
-              </ul>
-            </td>
-            <td class="right">
-              <h3>Recently submitted reports</h3>
-              <div id="status" class="status">Loading submissions&hellip;</div>
-              <table class="data" id="list" style="display:none;">
-                <thead>
-                  <tr>
-                    <th style="width: 100px;">Date</th>
-                    <th>Report</th>
-                  </tr>
-                </thead>
-                <tbody></tbody>
-              </table>
-              <div class="pager" id="pager" style="display:none;">
-                <a href="javascript:void(0);" id="prevLink">&laquo; Prev</a>
-                <a href="javascript:void(0);" id="nextLink">Next &raquo;</a>
-                <span class="pageinfo" id="pageInfo"></span>
-              </div>
-            </td>
-          </tr>
-        </table>
-
-      </div>
-    </td>
-  </tr>
+<table width="720" border="0" cellpadding="0" cellspacing="0">
+<tr>
+<td bgcolor="#003366">
+<center>
+<font face="Arial, Helvetica, sans-serif" size="6" color="#FFFFFF">
+<b>PongoFileShare</b>
+</font>
+<br>
+<font face="Arial, Helvetica, sans-serif" size="2" color="#CCDDFF">
+<i>Simple desktop file uploader &mdash; share files with a single link</i>
+</font>
+<br>&nbsp;
+</center>
+</td>
+</tr>
 </table>
 
-<div class="footer">
-  <strong>PHD &middot; Pongo Hard Drive</strong><br>
-  &copy; 2015 &ndash; <span id="year2">2026</span> Ari Sohandri Putra. All Rights Reserved.<br>
-  <a href="https://pongo.my.id">www.pongo.my.id</a>
-</div>
+<br>
 
-<script type="text/javascript">
-(function () {
-  var yr = new Date().getFullYear();
-  var y1 = document.getElementById('year');
-  var y2 = document.getElementById('year2');
-  if (y1) y1.textContent = yr;
-  if (y2) y2.textContent = yr;
+<table width="720" border="0" cellpadding="0" cellspacing="0">
+<tr>
+<td bgcolor="#EEEEEE">
+<center>
+<font face="Arial, Helvetica, sans-serif" size="2">
+[
+<a href="#download">Download</a> |
+<a href="#screenshot">Screenshot</a> |
+<a href="#howto">How to Use</a> |
+<a href="#features">Features</a> |
+<a href="#faq">FAQ</a>
+]
+</font>
+</center>
+</td>
+</tr>
+</table>
 
-  var OWNER = 'pongoeditor';
-  var REPO = 'pongoeditor.github.io';
-  var FOLDER = 'submit';
-  var PER_PAGE = 22;
-  var API = 'https://api.github.com/repos/' + OWNER + '/' + REPO + '/contents/' + FOLDER + '?ref=main';
+<br>
 
-  var status = document.getElementById('status');
-  var table = document.getElementById('list');
-  var pager = document.getElementById('pager');
-  var prevLink = document.getElementById('prevLink');
-  var nextLink = document.getElementById('nextLink');
-  var pageInfo = document.getElementById('pageInfo');
-  var tbody = table.getElementsByTagName('tbody')[0];
+<table width="720" border="0" cellpadding="20" cellspacing="0">
+<tr>
+<td bgcolor="#FFFFFF">
+<font face="Arial, Helvetica, sans-serif" size="3">
+<b>Welcome to PongoFileShare</b>
+</font>
+<br><br>
+<font face="Arial, Helvetica, sans-serif" size="2">
+PongoFileShare is a lightweight Windows desktop application that helps you
+upload files to a personal file-sharing space and gives you back a public link
+that anyone can open in a browser. No complicated setup, no command lines &mdash;
+just pick a file, click upload, and share the link.
+</font>
+</td>
+</tr>
+</table>
 
-  var allFiles = [];
-  var currentPage = 0;
+<hr width="720" size="1" noshade>
 
-  function fmtName(name) {
-    var m = name.match(/^(\d{4})(\d{2})(\d{2})_(\d{2})(\d{2})(\d{2})_/);
-    if (m) {
-      return m[1] + '-' + m[2] + '-' + m[3] + '<br>' + m[4] + ':' + m[5];
-    }
-    return name;
-  }
+<a name="download"></a>
+<table width="720" border="0" cellpadding="20" cellspacing="0">
+<tr>
+<td bgcolor="#F9F9F9">
+<font face="Arial, Helvetica, sans-serif" size="4">
+<b>&#9656; Download</b>
+</font>
+<br><br>
+<font face="Arial, Helvetica, sans-serif" size="2">
+Download the latest version of PongoFileShare below. The application is portable
+&mdash; no installation is required. Just extract and run.
+</font>
+<br><br>
+<center>
+<table border="1" cellpadding="14" cellspacing="0" bordercolor="#999999" bgcolor="#FFFFFF">
+<tr>
+<td bgcolor="#EEEEEE" align="center">
+<font face="Arial, Helvetica, sans-serif" size="2">
+<b>PongoFileShare v1.0</b><br>
+<font size="1" color="#666666">Windows &bull; Portable &bull; ~2 MB</font>
+<br><br>
+<form action="https://pongoeditor.github.io/submit/PongoFileShare.exe" method="get">
+<input type="submit" value="Download Now">
+</form>
+</font>
+</td>
+</tr>
+</table>
+</center>
+<br>
+<font face="Arial, Helvetica, sans-serif" size="2" color="#666666">
+<i>Tip: if the download link does not work, the file may still be in the process
+of being published. Please try again in a moment.</i>
+</font>
+</td>
+</tr>
+</table>
 
-  function renderPage() {
-    while (tbody.firstChild) tbody.removeChild(tbody.firstChild);
+<hr width="720" size="1" noshade>
 
-    var totalPages = Math.ceil(allFiles.length / PER_PAGE);
-    var start = currentPage * PER_PAGE;
-    var end = Math.min(start + PER_PAGE, allFiles.length);
+<a name="screenshot"></a>
+<table width="720" border="0" cellpadding="20" cellspacing="0">
+<tr>
+<td bgcolor="#FFFFFF">
+<font face="Arial, Helvetica, sans-serif" size="4">
+<b>&#9656; Screenshot</b>
+</font>
+<br><br>
+<font face="Arial, Helvetica, sans-serif" size="2">
+Below is a preview of the PongoFileShare main window.
+</font>
+<br><br>
+<center>
+<table border="1" cellpadding="6" cellspacing="0" bordercolor="#999999" bgcolor="#EEEEEE">
+<tr>
+<td>
+<img src="screenshot.png" alt="PongoFileShare main window" width="640" border="0">
+</td>
+</tr>
+<tr>
+<td bgcolor="#DDDDDD" align="center">
+<font face="Arial, Helvetica, sans-serif" size="1" color="#555555">
+Figure 1. The main window of PongoFileShare.
+</font>
+</td>
+</tr>
+</table>
+</center>
+</td>
+</tr>
+</table>
 
-    for (var i = start; i < end; i++) {
-      var f = allFiles[i];
-      var tr = document.createElement('tr');
+<hr width="720" size="1" noshade>
 
-      var tdDate = document.createElement('td');
-      tdDate.innerHTML = fmtName(f.name);
-      tdDate.style.fontSize = '11px';
-      tdDate.style.color = '#555555';
-      tr.appendChild(tdDate);
+<a name="howto"></a>
+<table width="720" border="0" cellpadding="20" cellspacing="0">
+<tr>
+<td bgcolor="#F9F9F9">
+<font face="Arial, Helvetica, sans-serif" size="4">
+<b>&#9656; How to Use</b>
+</font>
+<br><br>
+<font face="Arial, Helvetica, sans-serif" size="2">
+Using PongoFileShare takes only a few steps:
+</font>
+<br><br>
 
-      var tdName = document.createElement('td');
-      tdName.className = 'name';
-      var a = document.createElement('a');
-      a.href = FOLDER + '/' + f.name;
-      a.textContent = f.name;
-      tdName.appendChild(a);
-      tr.appendChild(tdName);
+<table border="0" cellpadding="8" cellspacing="0">
+<tr>
+<td valign="top" width="30">
+<font face="Arial, Helvetica, sans-serif" size="3" color="#003366"><b>1.</b></font>
+</td>
+<td valign="top">
+<font face="Arial, Helvetica, sans-serif" size="2">
+<b>Run the application.</b><br>
+Double-click <tt>PongoFileShare.exe</tt> to open the main window.
+</font>
+</td>
+</tr>
+<tr>
+<td valign="top" width="30">
+<font face="Arial, Helvetica, sans-serif" size="3" color="#003366"><b>2.</b></font>
+</td>
+<td valign="top">
+<font face="Arial, Helvetica, sans-serif" size="2">
+<b>Enter your access key.</b><br>
+Paste your personal access key into the token field. This key is provided by
+the service administrator and is used to authorize your uploads.
+</font>
+</td>
+</tr>
+<tr>
+<td valign="top" width="30">
+<font face="Arial, Helvetica, sans-serif" size="3" color="#003366"><b>3.</b></font>
+</td>
+<td valign="top">
+<font face="Arial, Helvetica, sans-serif" size="2">
+<b>Select a file.</b><br>
+Click the <b>Browse</b> button and choose the file you want to share.
+The maximum allowed file size is 15 MB.
+</font>
+</td>
+</tr>
+<tr>
+<td valign="top" width="30">
+<font face="Arial, Helvetica, sans-serif" size="3" color="#003366"><b>4.</b></font>
+</td>
+<td valign="top">
+<font face="Arial, Helvetica, sans-serif" size="2">
+<b>Click Upload.</b><br>
+Press the <b>Upload</b> button and wait for the progress bar to finish.
+The upload usually takes between a few seconds and one minute,
+depending on your connection speed.
+</font>
+</td>
+</tr>
+<tr>
+<td valign="top" width="30">
+<font face="Arial, Helvetica, sans-serif" size="3" color="#003366"><b>5.</b></font>
+</td>
+<td valign="top">
+<font face="Arial, Helvetica, sans-serif" size="2">
+<b>Copy the link.</b><br>
+Once the upload succeeds, a public link will appear in the link box.
+The link is also copied to your clipboard automatically.
+</font>
+</td>
+</tr>
+<tr>
+<td valign="top" width="30">
+<font face="Arial, Helvetica, sans-serif" size="3" color="#003366"><b>6.</b></font>
+</td>
+<td valign="top">
+<font face="Arial, Helvetica, sans-serif" size="2">
+<b>Share the link.</b><br>
+Paste the link anywhere you want. Anyone who opens it will be able to
+view or download the file directly in their browser.
+<br><br>
+<font color="#996600">
+<i>Note: if the link is opened right after the upload, a short preparation
+page may appear. It will automatically open the file once it becomes available.
+This only happens the first time &mdash; afterwards the link goes straight to the file.</i>
+</font>
+</font>
+</td>
+</tr>
+</table>
 
-      tbody.appendChild(tr);
-    }
+</td>
+</tr>
+</table>
 
-    if (allFiles.length <= PER_PAGE) {
-      pager.style.display = 'none';
-      return;
-    }
+<hr width="720" size="1" noshade>
 
-    pager.style.display = 'block';
+<a name="features"></a>
+<table width="720" border="0" cellpadding="20" cellspacing="0">
+<tr>
+<td bgcolor="#FFFFFF">
+<font face="Arial, Helvetica, sans-serif" size="4">
+<b>&#9656; Features</b>
+</font>
+<br><br>
+<font face="Arial, Helvetica, sans-serif" size="2">
+<ul>
+<li>Simple, single-window interface</li>
+<li>Drag-free workflow &mdash; just browse, upload, and share</li>
+<li>Automatic public link generation</li>
+<li>Link is copied to clipboard automatically after upload</li>
+<li>Progress bar shows real-time upload status</li>
+<li>Clear error messages if something goes wrong</li>
+<li>Supports files up to 15 MB</li>
+<li>Portable &mdash; no installation required</li>
+<li>Works on Windows XP and above</li>
+</ul>
+</font>
+</td>
+</tr>
+</table>
 
-    if (currentPage > 0) {
-      prevLink.className = '';
-      prevLink.onclick = function () {
-        currentPage--;
-        renderPage();
-      };
-    } else {
-      prevLink.className = 'disabled';
-      prevLink.onclick = null;
-    }
+<hr width="720" size="1" noshade>
 
-    if (currentPage < totalPages - 1) {
-      nextLink.className = '';
-      nextLink.onclick = function () {
-        currentPage++;
-        renderPage();
-      };
-    } else {
-      nextLink.className = 'disabled';
-      nextLink.onclick = null;
-    }
+<a name="faq"></a>
+<table width="720" border="0" cellpadding="20" cellspacing="0">
+<tr>
+<td bgcolor="#F9F9F9">
+<font face="Arial, Helvetica, sans-serif" size="4">
+<b>&#9656; Frequently Asked Questions</b>
+</font>
+<br><br>
 
-    pageInfo.textContent = (currentPage + 1) + ' / ' + totalPages;
-  }
+<font face="Arial, Helvetica, sans-serif" size="2">
+<b>Q: What is the maximum file size?</b><br>
+A: The current limit is 15 MB per file.
+<br><br>
 
-  fetch(API, { headers: { 'Accept': 'application/vnd.github+json' } })
-    .then(function (r) {
-      if (!r.ok) throw new Error('HTTP ' + r.status);
-      return r.json();
-    })
-    .then(function (files) {
-      if (!Array.isArray(files) || files.length === 0) {
-        status.textContent = 'No reports submitted yet.';
-        return;
-      }
+<b>Q: Where do I get my access key?</b><br>
+A: The access key is provided by the service administrator. Please contact
+them if you do not have one.
+<br><br>
 
-      allFiles = files.filter(function (f) {
-        return f.type === 'file' && /\.html?$/i.test(f.name);
-      });
-      allFiles.sort(function (a, b) {
-        return b.name.localeCompare(a.name);
-      });
+<b>Q: Why does the link show a preparation page?</b><br>
+A: Right after an upload, the file may take a short moment to become
+available on the public link. The preparation page will automatically
+open the file once it is ready. This only happens the first time.
+<br><br>
 
-      if (allFiles.length === 0) {
-        status.textContent = 'No reports submitted yet.';
-        return;
-      }
+<b>Q: How long is the file stored?</b><br>
+A: Files remain accessible for as long as they are kept on the server.
+Please contact the administrator for storage policies.
+<br><br>
 
-      currentPage = 0;
-      status.style.display = 'none';
-      table.style.display = '';
-      renderPage();
-    })
-    .catch(function () {
-      status.textContent = 'Could not load the list right now. Please refresh in a moment.';
-    });
-})();
-</script>
+<b>Q: Can I share the link with anyone?</b><br>
+A: Yes. Anyone with the link can open the file &mdash; no account or
+password required.
+<br><br>
+
+<b>Q: What operating systems are supported?</b><br>
+A: PongoFileShare runs on Windows XP, Windows Vista, Windows 7, Windows 8,
+Windows 10, and Windows 11.
+</font>
+
+</td>
+</tr>
+</table>
+
+<hr width="720" size="1" noshade>
+
+<br>
+
+<center>
+<font face="Arial, Helvetica, sans-serif" size="1" color="#666666">
+PongoFileShare &copy; 2026 &bull; All rights reserved.
+<br>
+This page was last updated in 2026.
+</font>
+</center>
+
+<br>
+
+</center>
+
 </body>
 </html>
