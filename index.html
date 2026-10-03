@@ -37,6 +37,7 @@
 <a href="#download">Download</a> |
 <a href="#screenshot">Screenshot</a> |
 <a href="#howto">How to Use</a> |
+<a href="#cli">Command Line</a> |
 <a href="#features">Features</a> |
 <a href="#faq">FAQ</a>
 ]
@@ -58,8 +59,11 @@
 <font face="Arial, Helvetica, sans-serif" size="2">
 PongoFileShare is a lightweight Windows desktop application that helps you
 upload files to a personal file-sharing space and gives you back a public link
-that anyone can open in a browser. No complicated setup, no command lines &mdash;
-just pick a file, click upload, and share the link.
+that anyone can open in a browser. No complicated setup, no command lines
+required &mdash; just pick a file, click upload, and share the link.
+<br><br>
+It also comes with a built-in command-line mode, so you can integrate it into
+your own scripts and automation tools.
 </font>
 </td>
 </tr>
@@ -172,18 +176,6 @@ Double-click <tt>PongoFileShare.exe</tt> to open the main window.
 </td>
 <td valign="top">
 <font face="Arial, Helvetica, sans-serif" size="2">
-<b>Enter your access key.</b><br>
-Paste your personal access key into the token field. This key is provided by
-the service administrator and is used to authorize your uploads.
-</font>
-</td>
-</tr>
-<tr>
-<td valign="top" width="30">
-<font face="Arial, Helvetica, sans-serif" size="3" color="#003366"><b>3.</b></font>
-</td>
-<td valign="top">
-<font face="Arial, Helvetica, sans-serif" size="2">
 <b>Select a file.</b><br>
 Click the <b>Browse</b> button and choose the file you want to share.
 The maximum allowed file size is 15 MB.
@@ -192,7 +184,7 @@ The maximum allowed file size is 15 MB.
 </tr>
 <tr>
 <td valign="top" width="30">
-<font face="Arial, Helvetica, sans-serif" size="3" color="#003366"><b>4.</b></font>
+<font face="Arial, Helvetica, sans-serif" size="3" color="#003366"><b>3.</b></font>
 </td>
 <td valign="top">
 <font face="Arial, Helvetica, sans-serif" size="2">
@@ -205,7 +197,7 @@ depending on your connection speed.
 </tr>
 <tr>
 <td valign="top" width="30">
-<font face="Arial, Helvetica, sans-serif" size="3" color="#003366"><b>5.</b></font>
+<font face="Arial, Helvetica, sans-serif" size="3" color="#003366"><b>4.</b></font>
 </td>
 <td valign="top">
 <font face="Arial, Helvetica, sans-serif" size="2">
@@ -217,7 +209,7 @@ The link is also copied to your clipboard automatically.
 </tr>
 <tr>
 <td valign="top" width="30">
-<font face="Arial, Helvetica, sans-serif" size="3" color="#003366"><b>6.</b></font>
+<font face="Arial, Helvetica, sans-serif" size="3" color="#003366"><b>5.</b></font>
 </td>
 <td valign="top">
 <font face="Arial, Helvetica, sans-serif" size="2">
@@ -241,10 +233,146 @@ This only happens the first time &mdash; afterwards the link goes straight to th
 
 <hr width="720" size="1" noshade>
 
-<a name="features"></a>
+<a name="cli"></a>
 <table width="720" border="0" cellpadding="20" cellspacing="0">
 <tr>
 <td bgcolor="#FFFFFF">
+<font face="Arial, Helvetica, sans-serif" size="4">
+<b>&#9656; Command-Line Usage</b>
+</font>
+<br><br>
+<font face="Arial, Helvetica, sans-serif" size="2">
+PongoFileShare can also be used from the command line, which makes it easy to
+integrate with scripts and automation tools.
+</font>
+<br><br>
+
+<font face="Arial, Helvetica, sans-serif" size="3">
+<b>Basic usage</b>
+</font>
+<br><br>
+<font face="Arial, Helvetica, sans-serif" size="2">
+Open Command Prompt or PowerShell in the folder where the application is located,
+then run:
+</font>
+<br><br>
+<table border="1" cellpadding="10" cellspacing="0" bordercolor="#999999" bgcolor="#F0F0F0" width="100%">
+<tr>
+<td>
+<font face="Courier New, monospace" size="2">
+PongoFileShare.exe "C:\path\to\your\file.pdf"
+</font>
+</td>
+</tr>
+</table>
+<br>
+
+<font face="Arial, Helvetica, sans-serif" size="2">
+On success, the public link will be printed to the screen. On failure, an error
+message will be shown instead.
+</font>
+<br><br>
+
+<font face="Arial, Helvetica, sans-serif" size="3">
+<b>Save the link to a text file</b>
+</font>
+<br><br>
+<table border="1" cellpadding="10" cellspacing="0" bordercolor="#999999" bgcolor="#F0F0F0" width="100%">
+<tr>
+<td>
+<font face="Courier New, monospace" size="2">
+PongoFileShare.exe "C:\Photos\image.jpg" &gt; link.txt
+</font>
+</td>
+</tr>
+</table>
+<br>
+<font face="Arial, Helvetica, sans-serif" size="2">
+The output file will contain only the public link, ready to be used by other programs.
+</font>
+<br><br>
+
+<font face="Arial, Helvetica, sans-serif" size="3">
+<b>Available options</b>
+</font>
+<br><br>
+<table border="1" cellpadding="8" cellspacing="0" bordercolor="#CCCCCC" width="100%" bgcolor="#F9F9F9">
+<tr bgcolor="#DDDDDD">
+<td width="30%">
+<font face="Arial, Helvetica, sans-serif" size="2"><b>Option</b></font>
+</td>
+<td>
+<font face="Arial, Helvetica, sans-serif" size="2"><b>Description</b></font>
+</td>
+</tr>
+<tr>
+<td>
+<font face="Courier New, monospace" size="2">-h, --help</font>
+</td>
+<td>
+<font face="Arial, Helvetica, sans-serif" size="2">Show help and usage information.</font>
+</td>
+</tr>
+<tr>
+<td>
+<font face="Courier New, monospace" size="2">-v, --version</font>
+</td>
+<td>
+<font face="Arial, Helvetica, sans-serif" size="2">Show the program version.</font>
+</td>
+</tr>
+</table>
+<br>
+
+<font face="Arial, Helvetica, sans-serif" size="3">
+<b>Exit codes</b>
+</font>
+<br><br>
+<table border="1" cellpadding="8" cellspacing="0" bordercolor="#CCCCCC" width="100%" bgcolor="#F9F9F9">
+<tr bgcolor="#DDDDDD">
+<td width="30%">
+<font face="Arial, Helvetica, sans-serif" size="2"><b>Code</b></font>
+</td>
+<td>
+<font face="Arial, Helvetica, sans-serif" size="2"><b>Meaning</b></font>
+</td>
+</tr>
+<tr>
+<td>
+<font face="Courier New, monospace" size="2">0</font>
+</td>
+<td>
+<font face="Arial, Helvetica, sans-serif" size="2">Upload succeeded.</font>
+</td>
+</tr>
+<tr>
+<td>
+<font face="Courier New, monospace" size="2">1</font>
+</td>
+<td>
+<font face="Arial, Helvetica, sans-serif" size="2">Upload failed.</font>
+</td>
+</tr>
+<tr>
+<td>
+<font face="Courier New, monospace" size="2">2</font>
+</td>
+<td>
+<font face="Arial, Helvetica, sans-serif" size="2">Invalid arguments.</font>
+</td>
+</tr>
+</table>
+
+</td>
+</tr>
+</table>
+
+<hr width="720" size="1" noshade>
+
+<a name="features"></a>
+<table width="720" border="0" cellpadding="20" cellspacing="0">
+<tr>
+<td bgcolor="#F9F9F9">
 <font face="Arial, Helvetica, sans-serif" size="4">
 <b>&#9656; Features</b>
 </font>
@@ -252,11 +380,13 @@ This only happens the first time &mdash; afterwards the link goes straight to th
 <font face="Arial, Helvetica, sans-serif" size="2">
 <ul>
 <li>Simple, single-window interface</li>
-<li>Drag-free workflow &mdash; just browse, upload, and share</li>
+<li>No sign-in required &mdash; just pick a file and upload</li>
 <li>Automatic public link generation</li>
 <li>Link is copied to clipboard automatically after upload</li>
 <li>Progress bar shows real-time upload status</li>
 <li>Clear error messages if something goes wrong</li>
+<li>Automatic retry on temporary network failures</li>
+<li>Built-in command-line mode for scripting</li>
 <li>Supports files up to 15 MB</li>
 <li>Portable &mdash; no installation required</li>
 <li>Works on Windows XP and above</li>
@@ -271,7 +401,7 @@ This only happens the first time &mdash; afterwards the link goes straight to th
 <a name="faq"></a>
 <table width="720" border="0" cellpadding="20" cellspacing="0">
 <tr>
-<td bgcolor="#F9F9F9">
+<td bgcolor="#FFFFFF">
 <font face="Arial, Helvetica, sans-serif" size="4">
 <b>&#9656; Frequently Asked Questions</b>
 </font>
@@ -282,9 +412,9 @@ This only happens the first time &mdash; afterwards the link goes straight to th
 A: The current limit is 15 MB per file.
 <br><br>
 
-<b>Q: Where do I get my access key?</b><br>
-A: The access key is provided by the service administrator. Please contact
-them if you do not have one.
+<b>Q: Do I need an account?</b><br>
+A: No. Simply download the application and start using it. No registration or
+sign-in required.
 <br><br>
 
 <b>Q: Why does the link show a preparation page?</b><br>
@@ -306,6 +436,16 @@ password required.
 <b>Q: What operating systems are supported?</b><br>
 A: PongoFileShare runs on Windows XP, Windows Vista, Windows 7, Windows 8,
 Windows 10, and Windows 11.
+<br><br>
+
+<b>Q: Can I use PongoFileShare in my own script?</b><br>
+A: Yes. The application includes a command-line mode. See the
+<a href="#cli">Command-Line Usage</a> section above.
+<br><br>
+
+<b>Q: What happens if the upload fails?</b><br>
+A: The application automatically retries up to three times. If it still fails,
+a clear error message will explain the reason and suggest what to do next.
 </font>
 
 </td>
