@@ -90,12 +90,13 @@
     border-radius: 10px;
     padding: 11px 14px;
     font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-    font-size: 12px;
+    font-size: 13px;
     color: #374151;
     word-break: break-all;
     margin-bottom: 22px;
-    text-align: left;
+    text-align: center;
     line-height: 1.5;
+    font-weight: 600;
   }
   .path-label {
     display: block;
@@ -212,7 +213,10 @@
   var $progress  = document.getElementById("progressFill");
   var $btn       = document.getElementById("checkBtn");
 
-  $path.textContent = requestedPath;
+  var fileName = requestedPath.split("/").pop();
+  if (!fileName || fileName.length === 0) fileName = requestedPath;
+  try { fileName = decodeURIComponent(fileName); } catch (e) {}
+  $path.textContent = fileName;
 
   function updateProgress() {
     var pct = Math.min(100, (attempts / MAX_ATTEMPTS) * 100);
@@ -355,7 +359,6 @@
 
   $btn.onclick = manualCheck;
 
-  // Start first check immediately
   checkFile();
 })();
 </script>
