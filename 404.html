@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Preparing your file...</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { height: 100%; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 50%, #a855f7 100%);
+    padding: 20px;
+    color: #1f2937;
+    -webkit-font-smoothing: antialiased;
+  }
+  .card {
+    background: #ffffff;
+    border-radius: 18px;
+    padding: 44px 36px;
+    max-width: 480px;
+    width: 100%;
+    box-shadow: 0 24px 60px rgba(0,0,0,0.28);
+    text-align: center;
+    animation: fadeIn 0.45s ease;
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .icon-wrap {
+    width: 84px;
+    height: 84px;
+    margin: 0 auto 26px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .spinner {
+    position: absolute;
+    inset: 0;
+    border: 4px solid #e5e7eb;
+    border-top-color: #6366f1;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .icon-inner {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: #eef2ff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 26px;
+    color: #6366f1;
+    font-weight: 700;
+  }
+  .icon-inner.success {
+    background: #dcfce7;
+    color: #16a34a;
+  }
+  .icon-inner.warn {
+    background: #fef3c7;
+    color: #d97706;
+  }
+  h1 {
+    font-size: 22px;
+    font-weight: 700;
+    color: #111827;
+    margin-bottom: 12px;
+    letter-spacing: -0.01em;
+  }
+  p.msg {
+    font-size: 14.5px;
+    color: #4b5563;
+    line-height: 1.65;
+    margin-bottom: 22px;
+  }
+  .path {
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    padding: 11px 14px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-size: 12px;
+    color: #374151;
+    word-break: break-all;
+    margin-bottom: 22px;
+    text-align: left;
+    line-height: 1.5;
+  }
+  .path-label {
+    display: block;
+    font-size: 10.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #9ca3af;
+    margin-bottom: 4px;
+    font-family: -apple-system, sans-serif;
+    font-weight: 600;
+  }
+  .status {
+    font-size: 13px;
+    color: #6b7280;
+    margin-bottom: 22px;
+    min-height: 20px;
+    line-height: 1.5;
+  }
+  .status .hl { color: #6366f1; font-weight: 600; }
+  .status .hl-green { color: #16a34a; font-weight: 600; }
+  .status .hl-warn { color: #d97706; font-weight: 600; }
+  .progress-bar {
+    width: 100%;
+    height: 4px;
+    background: #e5e7eb;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 22px;
+  }
+  .progress-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #6366f1, #a855f7);
+    border-radius: 4px;
+    transition: width 0.5s ease;
+  }
+  button {
+    background: #6366f1;
+    color: white;
+    border: none;
+    padding: 13px 24px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s, transform 0.08s;
+    width: 100%;
+    font-family: inherit;
+  }
+  button:hover:not(:disabled) { background: #4f46e5; }
+  button:active:not(:disabled) { transform: scale(0.985); }
+  button:disabled { background: #d1d5db; cursor: not-allowed; }
+  .hint {
+    font-size: 11.5px;
+    color: #9ca3af;
+    margin-top: 18px;
+    line-height: 1.5;
+  }
+</style>
+</head>
+<body>
+  <div class="card">
+    <div class="icon-wrap">
+      <div class="spinner" id="spinner"></div>
+      <div class="icon-inner" id="iconInner">⏳</div>
+    </div>
+
+    <h1 id="title">Your file is being prepared</h1>
+    <p class="msg" id="message">
+      The file you requested is not yet available. This page will check automatically
+      and open the file as soon as it's ready.
+    </p>
+
+    <div class="path">
+      <span class="path-label">Requested file</span>
+      <span id="pathDisplay"></span>
+    </div>
+
+    <div class="progress-bar">
+      <div class="progress-fill" id="progressFill"></div>
+    </div>
+
+    <div class="status" id="status">
+      Checking again in <span class="hl" id="countdown">5</span> seconds...
+    </div>
+
+    <button id="checkBtn" type="button">Check Now</button>
+
+    <div class="hint">This page refreshes automatically — no action needed.</div>
+  </div>
+
+<script>
+(function () {
+  "use strict";
+
+  var INTERVAL_MS   = 5000;
+  var MAX_ATTEMPTS  = 120;
+  var CHECK_INTERVAL = INTERVAL_MS;
+
+  var requestedPath = window.location.pathname;
+  var attempts      = 0;
+  var stopped       = false;
+  var checkTimer    = null;
+  var tickTimer     = null;
+  var secondsLeft   = 5;
+
+  var $path      = document.getElementById("pathDisplay");
+  var $status    = document.getElementById("status");
+  var $countdown = document.getElementById("countdown");
+  var $title     = document.getElementById("title");
+  var $message   = document.getElementById("message");
+  var $spinner   = document.getElementById("spinner");
+  var $iconInner = document.getElementById("iconInner");
+  var $progress  = document.getElementById("progressFill");
+  var $btn       = document.getElementById("checkBtn");
+
+  $path.textContent = requestedPath;
+
+  function updateProgress() {
+    var pct = Math.min(100, (attempts / MAX_ATTEMPTS) * 100);
+    $progress.style.width = pct.toFixed(1) + "%";
+  }
+
+  function startTick() {
+    secondsLeft = 5;
+    if ($countdown) $countdown.textContent = secondsLeft;
+    if (tickTimer) clearInterval(tickTimer);
+    tickTimer = setInterval(function () {
+      secondsLeft--;
+      if (secondsLeft < 0) secondsLeft = 0;
+      if ($countdown) $countdown.textContent = secondsLeft;
+      if (secondsLeft <= 0) {
+        clearInterval(tickTimer);
+        tickTimer = null;
+      }
+    }, 1000);
+  }
+
+  function clearTimers() {
+    if (checkTimer) { clearTimeout(checkTimer);  checkTimer = null; }
+    if (tickTimer)  { clearInterval(tickTimer);  tickTimer  = null; }
+  }
+
+  function scheduleNext() {
+    if (stopped) return;
+
+    if (attempts >= MAX_ATTEMPTS) {
+      showTimeout();
+      return;
+    }
+
+    updateProgress();
+
+    $status.innerHTML =
+      'Not ready yet. Checking again in <span class="hl" id="countdown">5</span> seconds...';
+    $countdown = document.getElementById("countdown");
+    startTick();
+
+    checkTimer = setTimeout(checkFile, CHECK_INTERVAL);
+  }
+
+  function checkFile() {
+    if (stopped) return;
+
+    attempts++;
+
+    var bust = (requestedPath.indexOf("?") >= 0 ? "&" : "?") + "_=" + Date.now();
+
+    var xhr = new XMLHttpRequest();
+    xhr.open("HEAD", requestedPath + bust, true);
+    xhr.setRequestHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+    xhr.setRequestHeader("Pragma", "no-cache");
+
+    xhr.onreadystatechange = function () {
+      if (xhr.readyState !== 4) return;
+
+      if (xhr.status >= 200 && xhr.status < 300) {
+        fileIsReady();
+      } else {
+        scheduleNext();
+      }
+    };
+
+    xhr.onerror = function () { scheduleNext(); };
+
+    try {
+      xhr.send();
+    } catch (e) {
+      scheduleNext();
+    }
+  }
+
+  function fileIsReady() {
+    stopped = true;
+    clearTimers();
+
+    $spinner.style.display = "none";
+    $iconInner.className = "icon-inner success";
+    $iconInner.textContent = "✓";
+
+    $title.textContent = "Your file is ready";
+    $message.textContent = "Opening the file now...";
+
+    $progress.style.width = "100%";
+    $status.innerHTML = '<span class="hl-green">Redirecting to your file...</span>';
+
+    $btn.disabled = true;
+    $btn.textContent = "Opening...";
+
+    setTimeout(function () {
+      window.location.replace(requestedPath);
+    }, 700);
+  }
+
+  function showTimeout() {
+    stopped = true;
+    clearTimers();
+
+    $spinner.style.display = "none";
+    $iconInner.className = "icon-inner warn";
+    $iconInner.textContent = "!";
+
+    $title.textContent = "Still not available";
+    $message.textContent =
+      "The file is taking longer than expected to become available. " +
+      "It may still be processing. You can wait a bit longer, or try again later.";
+
+    $status.innerHTML =
+      '<span class="hl-warn">Automatic checking stopped.</span>';
+    $progress.style.width = "100%";
+
+    $btn.disabled = false;
+    $btn.textContent = "Start Checking Again";
+    $btn.onclick = function () {
+      attempts = 0;
+      stopped = false;
+      $spinner.style.display = "block";
+      $iconInner.className = "icon-inner";
+      $iconInner.textContent = "⏳";
+      $title.textContent = "Your file is being prepared";
+      $message.textContent =
+        "The file you requested is not yet available. This page will check " +
+        "automatically and open the file as soon as it's ready.";
+      $progress.style.width = "0%";
+      $btn.textContent = "Check Now";
+      $btn.onclick = manualCheck;
+      manualCheck();
+    };
+  }
+
+  function manualCheck() {
+    if (stopped) return;
+    clearTimers();
+    $status.innerHTML = 'Checking... <span class="hl">please wait</span>';
+    checkFile();
+  }
+
+  $btn.onclick = manualCheck;
+
+  // Start first check immediately
+  checkFile();
+})();
+</script>
+</body>
+</html>
