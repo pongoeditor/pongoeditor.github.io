@@ -73,6 +73,32 @@ receive the file directly.
 
 <br>
 
+<table width="720" border="0" cellpadding="0" cellspacing="0">
+<tr>
+<td bgcolor="#E8F4FF">
+<table width="100%" border="0" cellpadding="12" cellspacing="0">
+<tr>
+<td width="24" valign="top" align="center">
+<font face="Arial, Helvetica, sans-serif" size="3" color="#0066CC">
+<b>&#8635;</b>
+</font>
+</td>
+<td valign="top">
+<font face="Arial, Helvetica, sans-serif" size="2" color="#003366">
+<b>Taking too long?</b> If this page has been loading for more than a minute
+or two, please refresh the page manually by pressing
+<b>F5</b> (or <b>Ctrl + F5</b> for a full refresh). A manual refresh often makes
+the file appear instantly once it is ready on the server.
+</font>
+</td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+
+<br>
+
 <table width="720" border="1" cellpadding="14" cellspacing="0" bordercolor="#CCCCCC" bgcolor="#F9F9F9">
 <tr>
 <td bgcolor="#E8EEF7" align="center">
@@ -208,16 +234,32 @@ PongoFileShare &copy; 2026 &bull; All rights reserved.
   var REPO_NAME   = "pongoeditor.github.io";
   var REPO_BRANCH = "main";
 
-  var INTERVAL_MS   = 3000;
-  var MAX_ATTEMPTS  = 200;
+  var CHECK_INTERVAL_MS = 2000;
+  var MAX_ATTEMPTS      = 300;
+  var FORCE_REDIRECT_MS = 60000;
+  var MAX_REDIRECTS     = 20;
 
   var requestedPath = window.location.pathname;
+
   var attempts      = 0;
   var stopped       = false;
   var checkTimer    = null;
   var tickTimer     = null;
   var secondsLeft   = 3;
   var rawReady      = false;
+  var rawReadyAt    = 0;
+  var redirectCount = 0;
+  var startedAt     = Date.now();
+
+  try {
+    var savedAt = sessionStorage.getItem("pongoRawReadyAt");
+    if (savedAt) {
+      rawReady = true;
+      rawReadyAt = parseInt(savedAt, 10);
+    }
+    var savedCount = sessionStorage.getItem("pongoRedirects");
+    if (savedCount) redirectCount = parseInt(savedCount, 10);
+  } catch (e) {}
 
   var $path      = document.getElementById("pathDisplay");
   var $status    = document.getElementById("status");
@@ -237,11 +279,6 @@ PongoFileShare &copy; 2026 &bull; All rights reserved.
     return "https://raw.githubusercontent.com/" +
            REPO_OWNER + "/" + REPO_NAME + "/" + REPO_BRANCH +
            requestedPath + "?_=" + Date.now();
-  }
-
-  function buildPagesUrl() {
-    var sep = requestedPath.indexOf("?") >= 0 ? "&" : "?";
-    return requestedPath + sep + "_=" + Date.now();
   }
 
   function updateProgress() {
@@ -275,7 +312,7 @@ PongoFileShare &copy; 2026 &bull; All rights reserved.
     if (tickTimer)  { clearInterval(tickTimer);  tickTimer  = null; }
   }
 
-  function scheduleNext() {
+  function scheduleNext(delayMs) {
     if (stopped) return;
 
     if (attempts >= MAX_ATTEMPTS) {
@@ -285,18 +322,14 @@ PongoFileShare &copy; 2026 &bull; All rights reserved.
 
     updateProgress();
 
-    if (rawReady) {
-      $status.innerHTML =
-        'File is on the server. Waiting for publication. ' +
-        'Retrying in <b id="countdown">3</b> seconds...';
-    } else {
-      $status.innerHTML =
-        'Not ready yet. Checking again in <b id="countdown">3</b> seconds...';
-    }
+    if (!delayMs) delayMs = CHECK_INTERVAL_MS;
+
+    $status.innerHTML =
+      'Not ready yet. Checking again in <b id="countdown">3</b> seconds...';
     $countdown = document.getElementById("countdown");
     startTick();
 
-    checkTimer = setTimeout(checkFile, INTERVAL_MS);
+    checkTimer = setTimeout(checkFile, delayMs);
   }
 
   function checkFile() {
@@ -304,11 +337,22 @@ PongoFileShare &copy; 2026 &bull; All rights reserved.
 
     attempts++;
 
-    if (!rawReady) {
-      checkRaw();
-    } else {
-      checkPages();
+    if (attempts >= MAX_ATTEMPTS) {
+      showTimeout();
+      return;
     }
+
+    if ((Date.now() - startedAt) >= FORCE_REDIRECT_MS) {
+      doRedirect();
+      return;
+    }
+
+    if (rawReady) {
+      handleReadyToRedirect();
+      return;
+    }
+
+    checkRaw();
   }
 
   function checkRaw() {
@@ -321,12 +365,18 @@ PongoFileShare &copy; 2026 &bull; All rights reserved.
 
       if (ok) {
         rawReady = true;
+        rawReadyAt = Date.now();
+        try {
+          sessionStorage.setItem("pongoRawReadyAt", rawReadyAt.toString());
+        } catch (e) {}
+
         $title.innerHTML = "Almost ready";
         $message.innerHTML =
-          "The file is now on the server. Please wait a moment while it " +
-          "is published to the public link.";
+          "The file is now on the server. This page will open it " +
+          "automatically in a moment.";
         setProgressColor("#F59E0B");
-        scheduleNext();
+
+        handleReadyToRedirect();
       } else {
         scheduleNext();
       }
@@ -337,37 +387,142 @@ PongoFileShare &copy; 2026 &bull; All rights reserved.
       .catch(function () { finish(false); });
   }
 
-  function checkPages() {
-    var url = buildPagesUrl();
-    var done = false;
+  function handleReadyToRedirect() {
+    var delayMs = redirectDelayMs();
+    var elapsed = Date.now() - rawReadyAt;
 
-    function finish(ok) {
-      if (done) return;
-      done = true;
-
-      if (ok) {
-        fileIsReady();
-      } else {
-        scheduleNext();
-      }
+    if (elapsed >= delayMs) {
+      doRedirect();
+      return;
     }
 
-    fetchNoCache(url)
-      .then(function (res) { finish(res && res.ok); })
-      .catch(function () { finish(false); });
+    var remaining = Math.max(1, Math.ceil((delayMs - elapsed) / 1000));
+
+    $status.innerHTML =
+      'Opening your file in <b id="countdown">' + remaining + '</b> seconds...';
+    $countdown = document.getElementById("countdown");
+
+    if (tickTimer) clearInterval(tickTimer);
+    secondsLeft = remaining;
+    tickTimer = setInterval(function () {
+      secondsLeft--;
+      if (secondsLeft < 0) secondsLeft = 0;
+      if ($countdown) $countdown.innerHTML = secondsLeft;
+      if (secondsLeft <= 0) {
+        clearInterval(tickTimer);
+        tickTimer = null;
+      }
+    }, 1000);
+
+    checkTimer = setTimeout(checkFile, 500);
+  }
+
+  function redirectDelayMs() {
+    if (redirectCount === 0) return 2000;
+    if (redirectCount === 1) return 4000;
+    if (redirectCount === 2) return 7000;
+    if (redirectCount === 3) return 10000;
+    return 15000;
+  }
+
+  function doRedirect() {
+    stopped = true;
+    clearTimers();
+
+    redirectCount++;
+    try {
+      sessionStorage.setItem("pongoRedirects", redirectCount.toString());
+    } catch (e) {}
+
+    if (redirectCount > MAX_REDIRECTS) {
+      showTimeout();
+      return;
+    }
+
+    setProgressColor("#16A34A");
+    if ($progress)    $progress.width = 720;
+    if ($progressBar) $progressBar.width = 720;
+
+    $title.innerHTML = "Your file is ready";
+    $message.innerHTML = "Opening the file now...";
+
+    $status.innerHTML = '<font color="#16A34A"><b>Redirecting to your file...</b></font>';
+
+    $btn.innerHTML = "<b>Opening...</b>";
+    $btn.onclick = function (e) { if (e && e.preventDefault) e.preventDefault(); };
+
+    var target = requestedPath + "?_cb=" + Date.now();
+
+    setTimeout(function () {
+      window.location.replace(target);
+    }, 350);
+  }
+
+  function showTimeout() {
+    stopped = true;
+    clearTimers();
+
+    setProgressColor("#D97706");
+    if ($progress)    $progress.width = 720;
+    if ($progressBar) $progressBar.width = 720;
+
+    $title.innerHTML = "Still not available";
+    $message.innerHTML =
+      "The file is taking longer than expected to become available. " +
+      "You can try again, or press F5 on your keyboard to refresh the page manually.";
+
+    $status.innerHTML = '<font color="#D97706"><b>Automatic checking stopped.</b> Press <b>F5</b> to refresh, or click Try Again.</font>';
+
+    $btn.innerHTML = "<b>Try Again</b>";
+    $btn.onclick = function (e) {
+      if (e && e.preventDefault) e.preventDefault();
+
+      try {
+        sessionStorage.removeItem("pongoRawReadyAt");
+        sessionStorage.removeItem("pongoRedirects");
+      } catch (ex) {}
+
+      attempts = 0;
+      stopped = false;
+      rawReady = false;
+      rawReadyAt = 0;
+      redirectCount = 0;
+      startedAt = Date.now();
+
+      setProgressColor("#6366F1");
+      updateProgress();
+
+      $title.innerHTML = "Your file is being prepared";
+      $message.innerHTML =
+        "The file you requested is not yet available. This page will check " +
+        "automatically and open the file as soon as it is ready.";
+
+      $btn.innerHTML = "<b>Check Now</b>";
+      $btn.onclick = manualCheck;
+
+      manualCheck();
+    };
+  }
+
+  function manualCheck(e) {
+    if (e && e.preventDefault) e.preventDefault();
+    if (stopped) return;
+    clearTimers();
+
+    try {
+      sessionStorage.removeItem("pongoRawReadyAt");
+      sessionStorage.removeItem("pongoRedirects");
+    } catch (ex) {}
+
+    rawReady = false;
+    rawReadyAt = 0;
+    redirectCount = 0;
+
+    $status.innerHTML = 'Checking... <b>please wait</b>';
+    checkFile();
   }
 
   function fetchNoCache(url) {
-    if (typeof fetch === "function") {
-      return fetch(url, {
-        method: "GET",
-        cache: "no-store",
-        headers: {
-          "Cache-Control": "no-cache, no-store, must-revalidate",
-          "Pragma": "no-cache"
-        }
-      });
-    }
     return new Promise(function (resolve, reject) {
       var xhr = new XMLHttpRequest();
       xhr.open("GET", url, true);
@@ -382,70 +537,9 @@ PongoFileShare &copy; 2026 &bull; All rights reserved.
     });
   }
 
-  function fileIsReady() {
-    stopped = true;
-    clearTimers();
-
-    setProgressColor("#16A34A");
-    updateProgress();
-    if ($progress)    $progress.width = 720;
-    if ($progressBar) $progressBar.width = 720;
-
-    $title.innerHTML = "Your file is ready";
-    $message.innerHTML = "Opening the file now...";
-
-    $status.innerHTML = '<font color="#16A34A"><b>Redirecting to your file...</b></font>';
-
-    $btn.innerHTML = "<b>Opening...</b>";
-    $btn.onclick = function (e) { if (e && e.preventDefault) e.preventDefault(); };
-
-    setTimeout(function () {
-      window.location.replace(requestedPath + "?v=" + Date.now());
-    }, 700);
-  }
-
-  function showTimeout() {
-    stopped = true;
-    clearTimers();
-
-    setProgressColor("#D97706");
-
-    $title.innerHTML = "Still not available";
-    $message.innerHTML =
-      "The file is taking longer than expected to become available. " +
-      "It may still be processing. You can wait a bit longer, or try again later.";
-
-    $status.innerHTML = '<font color="#D97706"><b>Automatic checking stopped.</b></font>';
-
-    $btn.innerHTML = "<b>Start Checking Again</b>";
-    $btn.onclick = function (e) {
-      if (e && e.preventDefault) e.preventDefault();
-      attempts = 0;
-      stopped = false;
-      rawReady = false;
-      setProgressColor("#6366F1");
-      updateProgress();
-      $title.innerHTML = "Your file is being prepared";
-      $message.innerHTML =
-        "The file you requested is not yet available. This page will check " +
-        "automatically and open the file as soon as it is ready.";
-      $btn.innerHTML = "<b>Check Now</b>";
-      $btn.onclick = manualCheck;
-      manualCheck();
-    };
-  }
-
-  function manualCheck(e) {
-    if (e && e.preventDefault) e.preventDefault();
-    if (stopped) return;
-    clearTimers();
-    $status.innerHTML = 'Checking... <b>please wait</b>';
-    checkFile();
-  }
-
   $btn.onclick = manualCheck;
 
-  setTimeout(checkFile, 1000);
+  setTimeout(checkFile, 500);
 })();
 </script>
 
