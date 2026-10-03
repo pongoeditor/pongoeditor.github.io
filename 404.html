@@ -1,291 +1,204 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="robots" content="noindex, nofollow">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<title>Preparing your file...</title>
-<style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  html, body { height: 100%; }
-  body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 50%, #a855f7 100%);
-    padding: 20px;
-    color: #1f2937;
-    -webkit-font-smoothing: antialiased;
-  }
-  .card {
-    background: #ffffff;
-    border-radius: 18px;
-    padding: 44px 36px;
-    max-width: 480px;
-    width: 100%;
-    box-shadow: 0 24px 60px rgba(0,0,0,0.28);
-    text-align: center;
-    animation: fadeIn 0.45s ease;
-  }
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(16px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-  .icon-wrap {
-    width: 84px;
-    height: 84px;
-    margin: 0 auto 26px;
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .spinner {
-    position: absolute;
-    inset: 0;
-    border: 4px solid #e5e7eb;
-    border-top-color: #6366f1;
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-  }
-  @keyframes spin { to { transform: rotate(360deg); } }
-  .icon-inner {
-    width: 52px;
-    height: 52px;
-    border-radius: 50%;
-    background: #eef2ff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 26px;
-    color: #6366f1;
-    font-weight: 700;
-  }
-  .icon-inner.success {
-    background: #dcfce7;
-    color: #16a34a;
-  }
-  .icon-inner.warn {
-    background: #fef3c7;
-    color: #d97706;
-  }
-  h1 {
-    font-size: 22px;
-    font-weight: 700;
-    color: #111827;
-    margin-bottom: 12px;
-    letter-spacing: -0.01em;
-  }
-  p.msg {
-    font-size: 14.5px;
-    color: #4b5563;
-    line-height: 1.65;
-    margin-bottom: 16px;
-  }
-  .notice {
-    background: #fffbeb;
-    border: 1px solid #fde68a;
-    border-left: 3px solid #f59e0b;
-    border-radius: 10px;
-    padding: 11px 14px;
-    margin-bottom: 18px;
-    font-size: 12.5px;
-    color: #78350f;
-    text-align: left;
-    line-height: 1.55;
-    display: flex;
-    align-items: flex-start;
-    gap: 9px;
-  }
-  .notice-icon {
-    flex-shrink: 0;
-    font-size: 15px;
-    line-height: 1.4;
-  }
-  .notice-text strong {
-    font-weight: 700;
-    color: #92400e;
-  }
-  .estimate {
-    background: linear-gradient(135deg, #eef2ff 0%, #f5f3ff 100%);
-    border: 1px solid #e0e7ff;
-    border-radius: 12px;
-    padding: 14px 18px;
-    margin-bottom: 22px;
-    text-align: left;
-  }
-  .estimate-title {
-    font-size: 10.5px;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: #6366f1;
-    font-weight: 700;
-    margin-bottom: 10px;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-  }
-  .estimate-title::before {
-    content: "⏱";
-    font-size: 13px;
-  }
-  .estimate-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 13px;
-    color: #4b5563;
-    padding: 5px 0;
-    line-height: 1.4;
-  }
-  .estimate-row + .estimate-row {
-    border-top: 1px dashed #e0e7ff;
-    margin-top: 4px;
-    padding-top: 9px;
-  }
-  .estimate-label {
-    font-weight: 500;
-  }
-  .estimate-value {
-    font-weight: 700;
-    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-    font-size: 12.5px;
-  }
-  .estimate-value.fast  { color: #16a34a; }
-  .estimate-value.slow  { color: #d97706; }
-  .path {
-    background: #f9fafb;
-    border: 1px solid #e5e7eb;
-    border-radius: 10px;
-    padding: 11px 14px;
-    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-    font-size: 13px;
-    color: #374151;
-    word-break: break-all;
-    margin-bottom: 22px;
-    text-align: center;
-    line-height: 1.5;
-    font-weight: 600;
-  }
-  .path-label {
-    display: block;
-    font-size: 10.5px;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: #9ca3af;
-    margin-bottom: 4px;
-    font-family: -apple-system, sans-serif;
-    font-weight: 600;
-  }
-  .status {
-    font-size: 13px;
-    color: #6b7280;
-    margin-bottom: 22px;
-    min-height: 20px;
-    line-height: 1.5;
-  }
-  .status .hl { color: #6366f1; font-weight: 600; }
-  .status .hl-green { color: #16a34a; font-weight: 600; }
-  .status .hl-warn { color: #d97706; font-weight: 600; }
-  .progress-bar {
-    width: 100%;
-    height: 4px;
-    background: #e5e7eb;
-    border-radius: 4px;
-    overflow: hidden;
-    margin-bottom: 22px;
-  }
-  .progress-fill {
-    height: 100%;
-    width: 0%;
-    background: linear-gradient(90deg, #6366f1, #a855f7);
-    border-radius: 4px;
-    transition: width 0.5s ease;
-  }
-  button {
-    background: #6366f1;
-    color: white;
-    border: none;
-    padding: 13px 24px;
-    border-radius: 10px;
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background 0.15s, transform 0.08s;
-    width: 100%;
-    font-family: inherit;
-  }
-  button:hover:not(:disabled) { background: #4f46e5; }
-  button:active:not(:disabled) { transform: scale(0.985); }
-  button:disabled { background: #d1d5db; cursor: not-allowed; }
-  .hint {
-    font-size: 11.5px;
-    color: #9ca3af;
-    margin-top: 18px;
-    line-height: 1.5;
-  }
-</style>
+<meta name="robots" content="noindex, nofollow">
+<title>PongoFileShare - File Preparation</title>
 </head>
-<body>
-  <div class="card">
-    <div class="icon-wrap">
-      <div class="spinner" id="spinner"></div>
-      <div class="icon-inner" id="iconInner">⏳</div>
-    </div>
+<body bgcolor="#FFFFFF" text="#000000" link="#0000CC" vlink="#660099" alink="#FF0000">
 
-    <h1 id="title">Your file is being prepared</h1>
-    <p class="msg" id="message">
-      The file you requested is not yet available. This page will check automatically
-      and open the file as soon as it's ready.
-    </p>
+<center>
 
-    <div class="notice">
-      <span class="notice-icon">ℹ</span>
-      <span class="notice-text">
-        <strong>One-time notice:</strong> this progress page appears only once —
-        the first time the link is opened. After the file is ready, anyone opening
-        the link will receive the file directly.
-      </span>
-    </div>
+<table width="720" border="0" cellpadding="0" cellspacing="0">
+<tr>
+<td bgcolor="#003366">
+<center>
+<font face="Arial, Helvetica, sans-serif" size="6" color="#FFFFFF">
+<b>PongoFileShare</b>
+</font>
+<br>
+<font face="Arial, Helvetica, sans-serif" size="2" color="#CCDDFF">
+<i>File preparation in progress</i>
+</font>
+<br>&nbsp;
+</center>
+</td>
+</tr>
+</table>
 
-    <div class="estimate">
-      <div class="estimate-title">Estimated time</div>
-      <div class="estimate-row">
-        <span class="estimate-label">Fastest</span>
-        <span class="estimate-value fast">~30 seconds</span>
-      </div>
-      <div class="estimate-row">
-        <span class="estimate-label">Typical</span>
-        <span class="estimate-value">1 – 5 minutes</span>
-      </div>
-      <div class="estimate-row">
-        <span class="estimate-label">Slowest</span>
-        <span class="estimate-value slow">up to 10 minutes</span>
-      </div>
-    </div>
+<br>
 
-    <div class="path">
-      <span class="path-label">Requested file</span>
-      <span id="pathDisplay"></span>
-    </div>
+<table width="720" border="0" cellpadding="20" cellspacing="0">
+<tr>
+<td bgcolor="#F9F9F9">
+<center>
+<font face="Arial, Helvetica, sans-serif" size="4" color="#003366">
+<b id="title">Your file is being prepared</b>
+</font>
+<br><br>
+<font face="Arial, Helvetica, sans-serif" size="2" id="message">
+The file you requested is not yet available. This page will check automatically
+and open the file as soon as it is ready.
+</font>
+</center>
+</td>
+</tr>
+</table>
 
-    <div class="progress-bar">
-      <div class="progress-fill" id="progressFill"></div>
-    </div>
+<table width="720" border="0" cellpadding="0" cellspacing="0">
+<tr>
+<td bgcolor="#FFFBEB">
+<table width="100%" border="0" cellpadding="12" cellspacing="0">
+<tr>
+<td width="24" valign="top" align="center">
+<font face="Arial, Helvetica, sans-serif" size="3" color="#F59E0B">
+<b>&#9432;</b>
+</font>
+</td>
+<td valign="top">
+<font face="Arial, Helvetica, sans-serif" size="2" color="#78350F">
+<b>One-time notice:</b> this progress page appears only once &mdash; the first
+time the link is opened. After the file is ready, anyone opening the link will
+receive the file directly.
+</font>
+</td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
 
-    <div class="status" id="status">
-      Not ready yet. Checking again in <span class="hl" id="countdown">3</span> seconds...
-    </div>
+<br>
 
-    <button id="checkBtn" type="button">Check Now</button>
+<table width="720" border="1" cellpadding="14" cellspacing="0" bordercolor="#CCCCCC" bgcolor="#F9F9F9">
+<tr>
+<td bgcolor="#E8EEF7" align="center">
+<font face="Arial, Helvetica, sans-serif" size="2" color="#003366">
+<b>&#9203; ESTIMATED TIME</b>
+</font>
+</td>
+</tr>
+<tr>
+<td bgcolor="#FFFFFF">
+<table width="100%" border="0" cellpadding="6" cellspacing="0">
+<tr>
+<td>
+<font face="Arial, Helvetica, sans-serif" size="2">Fastest</font>
+</td>
+<td align="right">
+<font face="Courier New, monospace" size="2" color="#16A34A"><b>~30 seconds</b></font>
+</td>
+</tr>
+<tr>
+<td colspan="2"><hr size="1" noshade color="#DDDDDD"></td>
+</tr>
+<tr>
+<td>
+<font face="Arial, Helvetica, sans-serif" size="2">Typical</font>
+</td>
+<td align="right">
+<font face="Courier New, monospace" size="2" color="#333333"><b>1 &ndash; 5 minutes</b></font>
+</td>
+</tr>
+<tr>
+<td colspan="2"><hr size="1" noshade color="#DDDDDD"></td>
+</tr>
+<tr>
+<td>
+<font face="Arial, Helvetica, sans-serif" size="2">Slowest</font>
+</td>
+<td align="right">
+<font face="Courier New, monospace" size="2" color="#D97706"><b>up to 10 minutes</b></font>
+</td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
 
-    <div class="hint">This page refreshes automatically — no action needed.</div>
-  </div>
+<br>
+
+<table width="720" border="1" cellpadding="12" cellspacing="0" bordercolor="#CCCCCC" bgcolor="#EEEEEE">
+<tr>
+<td bgcolor="#DDDDDD" align="center">
+<font face="Arial, Helvetica, sans-serif" size="1" color="#555555">
+REQUESTED FILE
+</font>
+</td>
+</tr>
+<tr>
+<td bgcolor="#FFFFFF" align="center">
+<font face="Courier New, monospace" size="2" color="#333333">
+<b id="pathDisplay">&nbsp;</b>
+</font>
+</td>
+</tr>
+</table>
+
+<br>
+
+<table width="720" border="0" cellpadding="0" cellspacing="0">
+<tr>
+<td bgcolor="#EEEEEE" height="20">
+<table width="0" border="0" cellpadding="0" cellspacing="0" id="progressBar" bgcolor="#6366F1">
+<tr>
+<td height="20" width="0" id="progressFill">&nbsp;</td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+
+<br>
+
+<center>
+<font face="Arial, Helvetica, sans-serif" size="2" color="#555555" id="status">
+Not ready yet. Checking again in <b id="countdown">3</b> seconds...
+</font>
+</center>
+
+<br>
+
+<center>
+<table border="0" cellpadding="0" cellspacing="0">
+<tr>
+<td bgcolor="#003366">
+<table border="0" cellpadding="0" cellspacing="0">
+<tr>
+<td>
+<font face="Arial, Helvetica, sans-serif" size="2">
+&nbsp;&nbsp;<a href="javascript:void(0)" id="checkBtn" style="color:#FFFFFF;text-decoration:none"><b>Check Now</b></a>&nbsp;&nbsp;
+</font>
+</td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+</center>
+
+<br>
+
+<center>
+<font face="Arial, Helvetica, sans-serif" size="1" color="#888888">
+<i>This page refreshes automatically &mdash; no action needed.</i>
+</font>
+</center>
+
+<hr width="720" size="1" noshade>
+
+<center>
+<font face="Arial, Helvetica, sans-serif" size="1" color="#666666">
+PongoFileShare &copy; 2026 &bull; All rights reserved.
+</font>
+</center>
+
+<br>
+
+</center>
 
 <script>
 (function () {
@@ -311,15 +224,14 @@
   var $countdown = document.getElementById("countdown");
   var $title     = document.getElementById("title");
   var $message   = document.getElementById("message");
-  var $spinner   = document.getElementById("spinner");
-  var $iconInner = document.getElementById("iconInner");
   var $progress  = document.getElementById("progressFill");
+  var $progressBar = document.getElementById("progressBar");
   var $btn       = document.getElementById("checkBtn");
 
   var fileName = requestedPath.split("/").pop();
   if (!fileName || fileName.length === 0) fileName = requestedPath;
   try { fileName = decodeURIComponent(fileName); } catch (e) {}
-  $path.textContent = fileName;
+  $path.innerHTML = fileName;
 
   function buildRawUrl() {
     return "https://raw.githubusercontent.com/" +
@@ -334,17 +246,23 @@
 
   function updateProgress() {
     var pct = Math.min(100, (attempts / MAX_ATTEMPTS) * 100);
-    $progress.style.width = pct.toFixed(1) + "%";
+    var px  = Math.round((pct / 100) * 720);
+    if ($progress)    $progress.width = px;
+    if ($progressBar) $progressBar.width = px;
+  }
+
+  function setProgressColor(color) {
+    if ($progressBar) $progressBar.bgColor = color;
   }
 
   function startTick() {
     secondsLeft = 3;
-    if ($countdown) $countdown.textContent = secondsLeft;
+    if ($countdown) $countdown.innerHTML = secondsLeft;
     if (tickTimer) clearInterval(tickTimer);
     tickTimer = setInterval(function () {
       secondsLeft--;
       if (secondsLeft < 0) secondsLeft = 0;
-      if ($countdown) $countdown.textContent = secondsLeft;
+      if ($countdown) $countdown.innerHTML = secondsLeft;
       if (secondsLeft <= 0) {
         clearInterval(tickTimer);
         tickTimer = null;
@@ -369,11 +287,11 @@
 
     if (rawReady) {
       $status.innerHTML =
-        'File is on the server. Waiting for CDN to publish. ' +
-        'Retrying in <span class="hl" id="countdown">3</span> seconds...';
+        'File is on the server. Waiting for publication. ' +
+        'Retrying in <b id="countdown">3</b> seconds...';
     } else {
       $status.innerHTML =
-        'Not ready yet. Checking again in <span class="hl" id="countdown">3</span> seconds...';
+        'Not ready yet. Checking again in <b id="countdown">3</b> seconds...';
     }
     $countdown = document.getElementById("countdown");
     startTick();
@@ -403,15 +321,11 @@
 
       if (ok) {
         rawReady = true;
-        $title.textContent = "Almost ready";
-        $message.textContent =
+        $title.innerHTML = "Almost ready";
+        $message.innerHTML =
           "The file is now on the server. Please wait a moment while it " +
           "is published to the public link.";
-        if ($spinner) $spinner.style.borderTopColor = "#f59e0b";
-        if ($iconInner) {
-          $iconInner.className = "icon-inner warn";
-          $iconInner.textContent = "◐";
-        }
+        setProgressColor("#F59E0B");
         scheduleNext();
       } else {
         scheduleNext();
@@ -419,9 +333,7 @@
     }
 
     fetchNoCache(url)
-      .then(function (res) {
-        finish(res && res.ok);
-      })
+      .then(function (res) { finish(res && res.ok); })
       .catch(function () { finish(false); });
   }
 
@@ -441,9 +353,7 @@
     }
 
     fetchNoCache(url)
-      .then(function (res) {
-        finish(res && res.ok);
-      })
+      .then(function (res) { finish(res && res.ok); })
       .catch(function () { finish(false); });
   }
 
@@ -476,20 +386,18 @@
     stopped = true;
     clearTimers();
 
-    if ($spinner) $spinner.style.display = "none";
-    if ($iconInner) {
-      $iconInner.className = "icon-inner success";
-      $iconInner.textContent = "✓";
-    }
+    setProgressColor("#16A34A");
+    updateProgress();
+    if ($progress)    $progress.width = 720;
+    if ($progressBar) $progressBar.width = 720;
 
-    $title.textContent = "Your file is ready";
-    $message.textContent = "Opening the file now...";
+    $title.innerHTML = "Your file is ready";
+    $message.innerHTML = "Opening the file now...";
 
-    $progress.style.width = "100%";
-    $status.innerHTML = '<span class="hl-green">Redirecting to your file...</span>';
+    $status.innerHTML = '<font color="#16A34A"><b>Redirecting to your file...</b></font>';
 
-    $btn.disabled = true;
-    $btn.textContent = "Opening...";
+    $btn.innerHTML = "<b>Opening...</b>";
+    $btn.onclick = function (e) { if (e && e.preventDefault) e.preventDefault(); };
 
     setTimeout(function () {
       window.location.replace(requestedPath + "?v=" + Date.now());
@@ -500,49 +408,38 @@
     stopped = true;
     clearTimers();
 
-    if ($spinner) $spinner.style.display = "none";
-    if ($iconInner) {
-      $iconInner.className = "icon-inner warn";
-      $iconInner.textContent = "!";
-    }
+    setProgressColor("#D97706");
 
-    $title.textContent = "Still not available";
-    $message.textContent =
+    $title.innerHTML = "Still not available";
+    $message.innerHTML =
       "The file is taking longer than expected to become available. " +
       "It may still be processing. You can wait a bit longer, or try again later.";
 
-    $status.innerHTML = '<span class="hl-warn">Automatic checking stopped.</span>';
-    $progress.style.width = "100%";
+    $status.innerHTML = '<font color="#D97706"><b>Automatic checking stopped.</b></font>';
 
-    $btn.disabled = false;
-    $btn.textContent = "Start Checking Again";
-    $btn.onclick = function () {
+    $btn.innerHTML = "<b>Start Checking Again</b>";
+    $btn.onclick = function (e) {
+      if (e && e.preventDefault) e.preventDefault();
       attempts = 0;
       stopped = false;
       rawReady = false;
-      if ($spinner) {
-        $spinner.style.display = "block";
-        $spinner.style.borderTopColor = "#6366f1";
-      }
-      if ($iconInner) {
-        $iconInner.className = "icon-inner";
-        $iconInner.textContent = "⏳";
-      }
-      $title.textContent = "Your file is being prepared";
-      $message.textContent =
+      setProgressColor("#6366F1");
+      updateProgress();
+      $title.innerHTML = "Your file is being prepared";
+      $message.innerHTML =
         "The file you requested is not yet available. This page will check " +
-        "automatically and open the file as soon as it's ready.";
-      $progress.style.width = "0%";
-      $btn.textContent = "Check Now";
+        "automatically and open the file as soon as it is ready.";
+      $btn.innerHTML = "<b>Check Now</b>";
       $btn.onclick = manualCheck;
       manualCheck();
     };
   }
 
-  function manualCheck() {
+  function manualCheck(e) {
+    if (e && e.preventDefault) e.preventDefault();
     if (stopped) return;
     clearTimers();
-    $status.innerHTML = 'Checking... <span class="hl">please wait</span>';
+    $status.innerHTML = 'Checking... <b>please wait</b>';
     checkFile();
   }
 
@@ -551,5 +448,6 @@
   setTimeout(checkFile, 1000);
 })();
 </script>
+
 </body>
 </html>
