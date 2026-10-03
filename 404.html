@@ -4,6 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex, nofollow">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
 <title>Preparing your file...</title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -82,8 +85,79 @@
     font-size: 14.5px;
     color: #4b5563;
     line-height: 1.65;
-    margin-bottom: 22px;
+    margin-bottom: 16px;
   }
+  .notice {
+    background: #fffbeb;
+    border: 1px solid #fde68a;
+    border-left: 3px solid #f59e0b;
+    border-radius: 10px;
+    padding: 11px 14px;
+    margin-bottom: 18px;
+    font-size: 12.5px;
+    color: #78350f;
+    text-align: left;
+    line-height: 1.55;
+    display: flex;
+    align-items: flex-start;
+    gap: 9px;
+  }
+  .notice-icon {
+    flex-shrink: 0;
+    font-size: 15px;
+    line-height: 1.4;
+  }
+  .notice-text strong {
+    font-weight: 700;
+    color: #92400e;
+  }
+  .estimate {
+    background: linear-gradient(135deg, #eef2ff 0%, #f5f3ff 100%);
+    border: 1px solid #e0e7ff;
+    border-radius: 12px;
+    padding: 14px 18px;
+    margin-bottom: 22px;
+    text-align: left;
+  }
+  .estimate-title {
+    font-size: 10.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #6366f1;
+    font-weight: 700;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .estimate-title::before {
+    content: "⏱";
+    font-size: 13px;
+  }
+  .estimate-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13px;
+    color: #4b5563;
+    padding: 5px 0;
+    line-height: 1.4;
+  }
+  .estimate-row + .estimate-row {
+    border-top: 1px dashed #e0e7ff;
+    margin-top: 4px;
+    padding-top: 9px;
+  }
+  .estimate-label {
+    font-weight: 500;
+  }
+  .estimate-value {
+    font-weight: 700;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-size: 12.5px;
+  }
+  .estimate-value.fast  { color: #16a34a; }
+  .estimate-value.slow  { color: #d97706; }
   .path {
     background: #f9fafb;
     border: 1px solid #e5e7eb;
@@ -170,6 +244,31 @@
       and open the file as soon as it's ready.
     </p>
 
+    <div class="notice">
+      <span class="notice-icon">ℹ</span>
+      <span class="notice-text">
+        <strong>One-time notice:</strong> this progress page appears only once —
+        the first time the link is opened. After the file is ready, anyone opening
+        the link will receive the file directly.
+      </span>
+    </div>
+
+    <div class="estimate">
+      <div class="estimate-title">Estimated time</div>
+      <div class="estimate-row">
+        <span class="estimate-label">Fastest</span>
+        <span class="estimate-value fast">~30 seconds</span>
+      </div>
+      <div class="estimate-row">
+        <span class="estimate-label">Typical</span>
+        <span class="estimate-value">1 – 5 minutes</span>
+      </div>
+      <div class="estimate-row">
+        <span class="estimate-label">Slowest</span>
+        <span class="estimate-value slow">up to 10 minutes</span>
+      </div>
+    </div>
+
     <div class="path">
       <span class="path-label">Requested file</span>
       <span id="pathDisplay"></span>
@@ -180,7 +279,7 @@
     </div>
 
     <div class="status" id="status">
-      Checking again in <span class="hl" id="countdown">5</span> seconds...
+      Not ready yet. Checking again in <span class="hl" id="countdown">3</span> seconds...
     </div>
 
     <button id="checkBtn" type="button">Check Now</button>
@@ -192,16 +291,20 @@
 (function () {
   "use strict";
 
-  var INTERVAL_MS   = 5000;
-  var MAX_ATTEMPTS  = 120;
-  var CHECK_INTERVAL = INTERVAL_MS;
+  var REPO_OWNER  = "pongoeditor";
+  var REPO_NAME   = "pongoeditor.github.io";
+  var REPO_BRANCH = "main";
+
+  var INTERVAL_MS   = 3000;
+  var MAX_ATTEMPTS  = 200;
 
   var requestedPath = window.location.pathname;
   var attempts      = 0;
   var stopped       = false;
   var checkTimer    = null;
   var tickTimer     = null;
-  var secondsLeft   = 5;
+  var secondsLeft   = 3;
+  var rawReady      = false;
 
   var $path      = document.getElementById("pathDisplay");
   var $status    = document.getElementById("status");
@@ -218,13 +321,24 @@
   try { fileName = decodeURIComponent(fileName); } catch (e) {}
   $path.textContent = fileName;
 
+  function buildRawUrl() {
+    return "https://raw.githubusercontent.com/" +
+           REPO_OWNER + "/" + REPO_NAME + "/" + REPO_BRANCH +
+           requestedPath + "?_=" + Date.now();
+  }
+
+  function buildPagesUrl() {
+    var sep = requestedPath.indexOf("?") >= 0 ? "&" : "?";
+    return requestedPath + sep + "_=" + Date.now();
+  }
+
   function updateProgress() {
     var pct = Math.min(100, (attempts / MAX_ATTEMPTS) * 100);
     $progress.style.width = pct.toFixed(1) + "%";
   }
 
   function startTick() {
-    secondsLeft = 5;
+    secondsLeft = 3;
     if ($countdown) $countdown.textContent = secondsLeft;
     if (tickTimer) clearInterval(tickTimer);
     tickTimer = setInterval(function () {
@@ -253,12 +367,18 @@
 
     updateProgress();
 
-    $status.innerHTML =
-      'Not ready yet. Checking again in <span class="hl" id="countdown">5</span> seconds...';
+    if (rawReady) {
+      $status.innerHTML =
+        'File is on the server. Waiting for CDN to publish. ' +
+        'Retrying in <span class="hl" id="countdown">3</span> seconds...';
+    } else {
+      $status.innerHTML =
+        'Not ready yet. Checking again in <span class="hl" id="countdown">3</span> seconds...';
+    }
     $countdown = document.getElementById("countdown");
     startTick();
 
-    checkTimer = setTimeout(checkFile, CHECK_INTERVAL);
+    checkTimer = setTimeout(checkFile, INTERVAL_MS);
   }
 
   function checkFile() {
@@ -266,39 +386,101 @@
 
     attempts++;
 
-    var bust = (requestedPath.indexOf("?") >= 0 ? "&" : "?") + "_=" + Date.now();
+    if (!rawReady) {
+      checkRaw();
+    } else {
+      checkPages();
+    }
+  }
 
-    var xhr = new XMLHttpRequest();
-    xhr.open("HEAD", requestedPath + bust, true);
-    xhr.setRequestHeader("Cache-Control", "no-cache, no-store, must-revalidate");
-    xhr.setRequestHeader("Pragma", "no-cache");
+  function checkRaw() {
+    var url = buildRawUrl();
+    var done = false;
 
-    xhr.onreadystatechange = function () {
-      if (xhr.readyState !== 4) return;
+    function finish(ok) {
+      if (done) return;
+      done = true;
 
-      if (xhr.status >= 200 && xhr.status < 300) {
+      if (ok) {
+        rawReady = true;
+        $title.textContent = "Almost ready";
+        $message.textContent =
+          "The file is now on the server. Please wait a moment while it " +
+          "is published to the public link.";
+        if ($spinner) $spinner.style.borderTopColor = "#f59e0b";
+        if ($iconInner) {
+          $iconInner.className = "icon-inner warn";
+          $iconInner.textContent = "◐";
+        }
+        scheduleNext();
+      } else {
+        scheduleNext();
+      }
+    }
+
+    fetchNoCache(url)
+      .then(function (res) {
+        finish(res && res.ok);
+      })
+      .catch(function () { finish(false); });
+  }
+
+  function checkPages() {
+    var url = buildPagesUrl();
+    var done = false;
+
+    function finish(ok) {
+      if (done) return;
+      done = true;
+
+      if (ok) {
         fileIsReady();
       } else {
         scheduleNext();
       }
-    };
-
-    xhr.onerror = function () { scheduleNext(); };
-
-    try {
-      xhr.send();
-    } catch (e) {
-      scheduleNext();
     }
+
+    fetchNoCache(url)
+      .then(function (res) {
+        finish(res && res.ok);
+      })
+      .catch(function () { finish(false); });
+  }
+
+  function fetchNoCache(url) {
+    if (typeof fetch === "function") {
+      return fetch(url, {
+        method: "GET",
+        cache: "no-store",
+        headers: {
+          "Cache-Control": "no-cache, no-store, must-revalidate",
+          "Pragma": "no-cache"
+        }
+      });
+    }
+    return new Promise(function (resolve, reject) {
+      var xhr = new XMLHttpRequest();
+      xhr.open("GET", url, true);
+      xhr.setRequestHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+      xhr.setRequestHeader("Pragma", "no-cache");
+      xhr.onreadystatechange = function () {
+        if (xhr.readyState !== 4) return;
+        resolve({ ok: xhr.status >= 200 && xhr.status < 300, status: xhr.status });
+      };
+      xhr.onerror = function () { reject(new Error("network")); };
+      try { xhr.send(); } catch (e) { reject(e); }
+    });
   }
 
   function fileIsReady() {
     stopped = true;
     clearTimers();
 
-    $spinner.style.display = "none";
-    $iconInner.className = "icon-inner success";
-    $iconInner.textContent = "✓";
+    if ($spinner) $spinner.style.display = "none";
+    if ($iconInner) {
+      $iconInner.className = "icon-inner success";
+      $iconInner.textContent = "✓";
+    }
 
     $title.textContent = "Your file is ready";
     $message.textContent = "Opening the file now...";
@@ -310,7 +492,7 @@
     $btn.textContent = "Opening...";
 
     setTimeout(function () {
-      window.location.replace(requestedPath);
+      window.location.replace(requestedPath + "?v=" + Date.now());
     }, 700);
   }
 
@@ -318,17 +500,18 @@
     stopped = true;
     clearTimers();
 
-    $spinner.style.display = "none";
-    $iconInner.className = "icon-inner warn";
-    $iconInner.textContent = "!";
+    if ($spinner) $spinner.style.display = "none";
+    if ($iconInner) {
+      $iconInner.className = "icon-inner warn";
+      $iconInner.textContent = "!";
+    }
 
     $title.textContent = "Still not available";
     $message.textContent =
       "The file is taking longer than expected to become available. " +
       "It may still be processing. You can wait a bit longer, or try again later.";
 
-    $status.innerHTML =
-      '<span class="hl-warn">Automatic checking stopped.</span>';
+    $status.innerHTML = '<span class="hl-warn">Automatic checking stopped.</span>';
     $progress.style.width = "100%";
 
     $btn.disabled = false;
@@ -336,9 +519,15 @@
     $btn.onclick = function () {
       attempts = 0;
       stopped = false;
-      $spinner.style.display = "block";
-      $iconInner.className = "icon-inner";
-      $iconInner.textContent = "⏳";
+      rawReady = false;
+      if ($spinner) {
+        $spinner.style.display = "block";
+        $spinner.style.borderTopColor = "#6366f1";
+      }
+      if ($iconInner) {
+        $iconInner.className = "icon-inner";
+        $iconInner.textContent = "⏳";
+      }
       $title.textContent = "Your file is being prepared";
       $message.textContent =
         "The file you requested is not yet available. This page will check " +
@@ -359,7 +548,7 @@
 
   $btn.onclick = manualCheck;
 
-  checkFile();
+  setTimeout(checkFile, 1000);
 })();
 </script>
 </body>
